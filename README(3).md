@@ -15,21 +15,21 @@ Projet pédagogique pour apprendre à créer un Snake en C++ avec une interface 
 
 ## 🗺️ Feuille de route (étapes numérotées)
 
-### 1. 🧱 Structure initiale du projet
-❌ Créer les dossiers suivants :  
-❌ `core/` : logique du jeu (Snake, Game)  
-❌ `includes/` : headers partagés (`IGui.hpp`, `GameState.hpp`)  
-❌ `gui_ncurses/` : interface Ncurses  
-❌ `main.cpp` à la racine  
-❌ `Makefile`  
+### ✅ 1. 🧱 Structure initiale du projet
+✅ Créer les dossiers suivants :  
+✅ `core/` : logique du jeu (Snake, Game)  
+✅ `includes/` : headers partagés (`IGui.hpp`, `GameState.hpp`)  
+✅ `gui_ncurses/` : interface Ncurses  
+✅ `main.cpp` à la racine  
+✅ `Makefile`  
 
 ---
 
 ### 2. 🧠 Implémentation de la logique du Snake
-❌ Créer la classe `Snake` avec :  
-❌ position  
-❌ direction  
-❌ méthode `move()`, `grow()`, `checkCollision()`  
+✅ Créer la classe `Snake` avec :  
+✅ position  
+✅ direction  
+✅ méthode `move()`, `grow()`, `checkCollision()`  
 
 ❌ Créer la classe `Game` avec :  
 ❌ boucle de jeu (`loop()`)  
