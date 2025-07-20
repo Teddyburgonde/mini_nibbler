@@ -1,7 +1,14 @@
 #include <ncurses.h>
 #include <deque>
 
-
+// Initialize colors in your main function or an initialization function:
+void initializeColors() 
+{
+    start_color(); // Active le mode couleur
+    init_pair(1, COLOR_GREEN, COLOR_BLACK); 
+	init_pair(2, COLOR_RED, COLOR_BLACK); // Nourriture
+	init_pair(3, COLOR_YELLOW, COLOR_BLACK); 
+}
 
 struct Point 
 { 
@@ -65,11 +72,20 @@ void drawSnake(const std::deque<Point>& snake)
 		return;
 
 	// Tête du snake
+	attron(COLOR_PAIR(1)); 
 	mvaddch(snake[0].y, snake[0].x, '@');
+	attroff(COLOR_PAIR(1));
 	
 	// Corps du snake
 	for (size_t i = 1; i < snake.size(); ++i)
 	{
 		mvaddch(snake[i].y, snake[i].x, 'O');
 	}
+}
+
+void drawFood(const Point& food)
+{
+	attron(COLOR_PAIR(2)); 
+	mvaddch(food.y, food.x, '*');
+	attroff(COLOR_PAIR(2));
 }

@@ -22,6 +22,7 @@ class Snake {
 		void grow();
 		bool checkCollision(const Point& pos) const;
 		const std::deque<Point>& getBody() const;
+		void setDirection(Direction newDir);
 
 
 	private:
