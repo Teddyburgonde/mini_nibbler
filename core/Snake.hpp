@@ -1,20 +1,35 @@
+#pragma once
+
 #include <deque>
 #include <iostream>
 
-struct Point {
+/**
+ * @brief Structure représentant un point (x, y) sur la grille.
+ */
+struct Point 
+{
 	int	x;
 	int	y;
 };
 
-enum class Direction {
+/**
+ * @brief Enumération des directions possibles du serpent.
+ */
+enum class Direction 
+{
 	UP,
 	DOWN,
 	LEFT,
 	RIGHT,
 };
 
-
-class Snake {
+/**
+ * @brief Classe représentant le serpent dans le jeu.
+ *
+ * Gère le déplacement, la croissance, les collisions, et la direction.
+ */
+class Snake 
+{
 	public:
 		Snake(int startX, int startY);
 		~Snake();

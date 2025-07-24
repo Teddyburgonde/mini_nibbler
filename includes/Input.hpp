@@ -10,7 +10,8 @@
  * Elle est utilisée pour unifier la gestion des entrées utilisateur
  * dans toutes les interfaces graphiques (ncurses, SDL, SFML...).
  */
-enum Input {
+enum Input 
+{
 	UP,
 	DOWN,
 	LEFT,

@@ -1,11 +1,96 @@
 #include "Snake.hpp"
 
-Snake::Snake(int startX, int startY)
+/**
+ * @brief Constructeur du Snake : initialise le corps avec une seule case au point de départ
+ */
+Snake::Snake(int startX, int startY) : direction(Direction::RIGHT)
 {
-	body.push_back(Point(startX, startY));
-	direction = Direction::RIGHT;
+	body.push_front({startX, startY});
 }
 
-Snake::~Snake()
-{}
+/**
+ * @brief Destructeur par défaut
+ */
+Snake::~Snake() {}
 
+/**
+ * @brief Déplace le serpent dans la direction actuelle
+ */
+void Snake::move()
+{
+	Point head = body.front();
+
+	switch (direction)
+	{
+		case Direction::UP:    
+			head.y -= 1; 
+			break;
+		case Direction::DOWN:
+		 	head.y += 1;
+			break;
+		case Direction::LEFT:
+		 	head.x -= 1;
+			break;
+		case Direction::RIGHT:
+			head.x += 1;
+			break;
+	}
+
+	body.push_front(head); // Ajoute la nouvelle tête
+	body.pop_back(); // Supprime l'ancienne queue
+}
+
+/**
+ * @brief Fait grandir le serpent (ajoute un nouveau point sans retirer la queue)
+ */
+void Snake::grow()
+{
+	Point head = body.front();
+
+	switch (direction)
+	{
+		case Direction::UP:
+			head.y -= 1;
+			break;
+		case Direction::DOWN:
+			head.y += 1;
+			break;
+		case Direction::LEFT:
+			head.x -= 1;
+			break;
+		case Direction::RIGHT:
+			head.x += 1;
+			break;
+	}
+
+	body.push_front(head);
+}
+
+/**
+ * @brief Vérifie si la position donnée entre en collision avec le corps du serpent
+ */
+bool Snake::checkCollision(const Point& pos) const
+{
+	for (const Point& part : body)
+	{
+		if (part.x == pos.x && part.y == pos.y)
+			return true;
+	}
+	return false;
+}
+
+/**
+ * @brief Retourne le corps complet du serpent (en lecture seule)
+ */
+const std::deque<Point>& Snake::getBody() const
+{
+	return body;
+}
+
+/**
+ * @brief Modifie la direction du serpent
+ */
+void Snake::setDirection(Direction newDir)
+{
+	direction = newDir;
+}
