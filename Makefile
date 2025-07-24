@@ -5,7 +5,7 @@ NAME = nibbler
 CXX = c++
 
 #=================== FLAGS ==================#
-CXXFLAGS = -Wall -Wextra -Werror
+CXXFLAGS = -Wall -Wextra -Werror -std=c++17
 LDFLAGS = -lncurses
 
 #================== SOURCES =================#

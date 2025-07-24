@@ -1,8 +1,7 @@
 #pragma once
 
 #include <deque>
-#include "Point.hpp"
-#include "Snake.hpp"
+#include "../core/Snake.hpp"
 
 /**
  * @brief Fonctions utilitaires pour dessiner les éléments du jeu Snake avec ncurses.

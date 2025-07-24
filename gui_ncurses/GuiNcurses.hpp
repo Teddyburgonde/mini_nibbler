@@ -1,7 +1,7 @@
 #pragma once
 #include "../includes/IGui.hpp"
 #include <ncurses.h>
-#include "GameState.hpp"
+#include "../core/GameState.hpp"
 #include "GuiNcursesDraw.hpp"
 
 /**
@@ -13,7 +13,7 @@
 class GuiNcurses : public IGui
 {
 	public:
-		void	init() override;
+		void	init(int width, int height) override;
 		void	render(const GameState& state) override;
 		Input	getInput() override;
 		void	cleanup() override;
@@ -21,4 +21,4 @@ class GuiNcurses : public IGui
 	private:
 		int	_screenWidth;
 		int	_screenHeight;
-}
+};

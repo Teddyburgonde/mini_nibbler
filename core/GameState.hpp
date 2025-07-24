@@ -1,8 +1,7 @@
 #pragma once
 
 #include "Snake.hpp"
-#include "Input.hpp"
-#include "Point.hpp"
+#include "../includes/Input.hpp"
 #include <cstdlib>
 #include <ctime>
 

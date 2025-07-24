@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Snake.hpp"
 #include <cstdlib>
 #include <ctime>

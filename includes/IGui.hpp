@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameState.hpp"
+#include "../core/GameState.hpp"
 #include "Input.hpp"
 
 /**

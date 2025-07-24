@@ -1,8 +1,6 @@
-#pragma once
-
 #include "core/Game.hpp"
-#include "../includes/IGui.hpp"
-#include "../gui_ncurses/GuiNcurses.hpp"
+#include "includes/IGui.hpp"
+#include "gui_ncurses/GuiNcurses.hpp"
 
 /**
  * @file main.cpp
