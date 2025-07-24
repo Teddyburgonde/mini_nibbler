@@ -1,5 +1,22 @@
-#include "core/Game.hpp"
+#pragma once
 
+#include "core/Game.hpp"
+#include "../includes/IGui.hpp"
+#include "../gui_ncurses/GuiNcurses.hpp"
+
+/**
+ * @file main.cpp
+ * @brief Point d'entrée principal du jeu Nibbler.
+ *
+ * Ce fichier initialise les paramètres de la fenêtre à partir des arguments
+ * de la ligne de commande, instancie la GUI et la logique de jeu, puis lance
+ * la boucle principale :
+ * - Récupère l'input utilisateur
+ * - Met à jour l'état du jeu
+ * - Affiche le rendu
+ * 
+ * À la fin, la mémoire est libérée et la fenêtre nettoyée proprement.
+ */
 int main(int argc, char **argv)
 {
 	if (argc != 3)
@@ -17,15 +34,15 @@ int main(int argc, char **argv)
 	}
 
 	IGui* gui = new GuiNcurses();
-	gui->init();
+	gui->init(width, height);
 	GameState game;
 
 	while (!game.isFinished())
 	{
-	Input input = gui->getInput();
-	game.setDirection(input);
-	game.update();
-	gui->render(game);
+		Input input = gui->getInput();
+		game.setDirection(input);
+		game.update();
+		gui->render(game);
 	}
 	gui->cleanup();
 	delete gui;
