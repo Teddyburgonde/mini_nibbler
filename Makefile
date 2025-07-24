@@ -2,24 +2,27 @@
 NAME = nibbler
 
 #================ COMPILER ==================#
-CPP = c++
+CXX = c++
 
 #=================== FLAGS ==================#
-CPPFLAGS = -Wall -Wextra -Werror
+CXXFLAGS = -Wall -Wextra -Werror
 LDFLAGS = -lncurses
 
 #================== SOURCES =================#
 SRCS = main.cpp \
        core/Game.cpp \
+	   core/GameState.cpp \
        core/Snake.cpp \
-       gui_ncurses/GuiNcurses.cpp
+       gui_ncurses/GuiNcurses.cpp \
+	   gui_ncurses/GuiNcursesDraw.cpp \
+
 
 #============== OBJECT FILES ================#
 OBJS = $(SRCS:.cpp=.o)
 
 #========== GENERATION BINARY FILES =========#
 %.o : %.cpp
-	$(CXX) $(CPPFLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 #================= COLORS ===================#
 GREEN = \033[32m
