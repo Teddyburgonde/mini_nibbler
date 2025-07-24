@@ -2,6 +2,7 @@
 
 #include "Snake.hpp"
 #include "../includes/Input.hpp"
+#include "../includes/Point.hpp"
 #include <cstdlib>
 #include <ctime>
 

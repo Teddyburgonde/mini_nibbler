@@ -34,7 +34,7 @@ void	GuiNcurses::init(int width, int height)
  */
 void	GuiNcurses::render(const GameState& state)
 {
-	drawWalls(width, height);
+	drawWalls(_screenWidth, _screenHeight);
 	drawSnake(state.getSnake().getBody());
 	drawFood(state.getFood());
 	refresh();

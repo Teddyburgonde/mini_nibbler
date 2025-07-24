@@ -2,15 +2,8 @@
 
 #include <deque>
 #include <iostream>
+#include "../includes/Point.hpp"
 
-/**
- * @brief Structure représentant un point (x, y) sur la grille.
- */
-struct Point 
-{
-	int	x;
-	int	y;
-};
 
 /**
  * @brief Enumération des directions possibles du serpent.
