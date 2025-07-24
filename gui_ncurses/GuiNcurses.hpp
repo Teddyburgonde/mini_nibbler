@@ -1,6 +1,8 @@
 #pragma once
 #include "../includes/IGui.hpp"
 #include <ncurses.h>
+#include "GameState.hpp"
+#include "GuiNcursesDraw.hpp"
 
 /**
  * @brief Implémentation Ncurses de l’interface IGui.
