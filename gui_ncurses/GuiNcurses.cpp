@@ -49,6 +49,7 @@ void GuiNcurses::init(int width, int height)
 	noecho();
 	nodelay(stdscr, TRUE);
 	cbreak();
+	curs_set(0);
 	start_color();
 	init_pair(1, COLOR_GREEN, COLOR_BLACK);
 	init_pair(2, COLOR_RED, COLOR_BLACK);
@@ -118,4 +119,24 @@ Input GuiNcurses::getInput()
 void	GuiNcurses::cleanup()
 {
 	endwin();
+}
+
+void GuiNcurses::showGameOver()
+{
+	int winHeight = 5;
+	int winWidth = 30;
+	int startY = (_screenHeight - winHeight) / 2;
+	int startX = (_screenWidth - winWidth) / 2;
+
+	WINDOW* popup = newwin(winHeight, winWidth, startY, startX);
+	box(popup, 0, 0); // Dessine un cadre
+	mvwprintw(popup, 1, 10, "GAME OVER! 💀");
+	mvwprintw(popup, 2, 5, "Press q to exit...");
+	wrefresh(popup);
+
+	// Attend q
+	int ch;
+	while ((ch = getch()) != 'q') {}
+
+	delwin(popup); // Libère la fenêtre
 }

@@ -22,5 +22,6 @@ class IGui
 		virtual void render(const GameState& state) = 0;
 		virtual Input getInput() = 0;
 		virtual void cleanup() = 0;
+		virtual void showGameOver() = 0;
 		virtual ~IGui(){};
 };
