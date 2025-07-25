@@ -139,8 +139,8 @@ void GameState::setDirection(Input input)
  */
 void GameState::generateFood()
 {
-	int x = std::rand() % _width;;
-	int y = std::rand() % _height;
+	int x = 1 + std::rand() % (_width - 2);
+	int y = 1 + std::rand() % (_height - 2);
 	food = Point(x, y);
 }
 
