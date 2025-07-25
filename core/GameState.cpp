@@ -4,7 +4,13 @@
  * @brief Constructeur par défaut du GameState.
  * Initialise le snake, la nourriture, le score et l'état du jeu.
  */
-GameState::GameState(): snake(5, 10), food(0, 0), _score(0), finished(false)
+GameState::GameState(int width, int height)
+	: snake(width / 2, height / 2),
+	  food(),
+	  _score(0),
+	  finished(false),
+	  _width(width),
+	  _height(height)
 {
 	std::srand(std::time(nullptr));
 	generateFood();
@@ -14,7 +20,10 @@ GameState::GameState(): snake(5, 10), food(0, 0), _score(0), finished(false)
  * @brief Constructeur de copie.
  * @param copy L'autre GameState à copier.
  */
-GameState::GameState(const GameState& copy): snake(copy.snake), food(copy.food), _score(copy._score), finished(copy.finished)
+GameState::GameState(const GameState& copy)
+	: snake(copy.snake), food(copy.food),
+	  _score(copy._score), finished(copy.finished),
+	  _width(copy._width), _height(copy._height)
 {}
 
 /**
@@ -30,6 +39,8 @@ GameState& GameState::operator=(const GameState& copy)
 		food = copy.food;
 		_score = copy._score;
 		finished = copy.finished;
+		_width = copy._width;
+		_height = copy._height;
 	}
 	return *this;
 }
@@ -82,6 +93,12 @@ bool GameState::isFinished() const
 void GameState::update()
 {
 	snake.move();
+	// Point head = snake.getBody().front();
+	// if (head.x <= 0 || head.x >= _width - 1 || head.y <= 0 || head.y >= _height - 1)
+	// {
+	// 	finished = true;
+	// 	return;
+	// }
 
 	if (snake.getBody().front().x == food.x && snake.getBody().front().y == food.y)
 	{
@@ -89,7 +106,6 @@ void GameState::update()
 		increaseScore(10);
 		generateFood();
 	}
-
 	if (_score >= 100)
 		finished = true;
 }
@@ -123,8 +139,8 @@ void GameState::setDirection(Input input)
  */
 void GameState::generateFood()
 {
-	int x = std::rand() % 80;
-	int y = std::rand() % 24;
+	int x = std::rand() % _width;;
+	int y = std::rand() % _height;
 	food = Point(x, y);
 }
 

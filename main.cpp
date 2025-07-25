@@ -15,6 +15,7 @@
  * 
  * À la fin, la mémoire est libérée et la fenêtre nettoyée proprement.
  */
+#include <unistd.h>
 int main(int argc, char **argv)
 {
 	if (argc != 3)
@@ -32,18 +33,16 @@ int main(int argc, char **argv)
 	}
 
 	IGui* gui = new GuiNcurses();
-	std::cout << "Avant init" << std::endl;
 	gui->init(width, height);
-	std::cout << "Apres init" << std::endl;
-	GameState game;
+	GameState game(width, height);
 
 	while (!game.isFinished())
 	{
-		std::cout << "boucle" << std::endl;
 		Input input = gui->getInput();
 		game.setDirection(input);
 		game.update();
 		gui->render(game);
+		usleep(100000);
 	}
 	gui->cleanup();
 	delete gui;

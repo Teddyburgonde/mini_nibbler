@@ -1,4 +1,5 @@
 #include <ncurses.h>
+#include <fstream>
 #include "GuiNcursesDraw.hpp"
 
 /**
@@ -55,6 +56,8 @@ void drawSnake(const std::deque<Point>& snake)
 {
 	if (snake.empty())
 		return;
+	std::ofstream log("debug.log", std::ios::app);
+	log << "Snake size: " << snake.size() << std::endl;
 
 	attron(COLOR_PAIR(1));
 	mvaddch(snake[0].y, snake[0].x, '@'); // Tête

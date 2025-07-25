@@ -4,8 +4,8 @@
  * @brief Constructeur de la classe Game.
  * Initialise le snake au centre, la position de la nourriture et les dimensions du plateau.
  */
-Game::Game()
-	: snake(10, 10), gameOver(false), width(80), height(24)
+Game::Game(int w, int h)
+	: snake(w / 2, h / 2), gameOver(false), width(w), height(h)
 {
 	std::srand(std::time(nullptr));
 	generateRandomFoodPosition();
