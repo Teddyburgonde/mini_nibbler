@@ -11,7 +11,27 @@
  * @param width Largeur de l'écran de jeu.
  * @param height Hauteur de l'écran de jeu.
  */
-void	GuiNcurses::init(int width, int height)
+// void	GuiNcurses::init(int width, int height)
+// {
+// 	_screenWidth = width;
+// 	_screenHeight = height;
+
+// 	WINDOW* win = initscr();
+// 	if (win == nullptr)
+// 	{
+// 		std::cout << "initscr() failed!" << std::endl;
+// 		return;
+// 	}
+// 	noecho();                  // Ne pas afficher les caractères tapés
+// 	nodelay(stdscr, TRUE);     // getch() devient non bloquant
+// 	cbreak();                  // Lecture directe sans attendre ENTER
+// 	start_color();             // Active les couleurs
+// 	init_pair(1, COLOR_GREEN, COLOR_BLACK);
+// 	init_pair(2, COLOR_RED, COLOR_BLACK);
+// }
+
+
+void GuiNcurses::init(int width, int height)
 {
 	_screenWidth = width;
 	_screenHeight = height;
@@ -22,10 +42,22 @@ void	GuiNcurses::init(int width, int height)
 		std::cout << "initscr() failed!" << std::endl;
 		return;
 	}
-	noecho();                  // Ne pas afficher les caractères tapés
-	nodelay(stdscr, TRUE);     // getch() devient non bloquant
-	cbreak();                  // Lecture directe sans attendre ENTER
-	start_color();             // Active les couleurs
+
+	// Vérification réelle de la taille ici
+	int termHeight, termWidth;
+	getmaxyx(stdscr, termHeight, termWidth);
+	if (height > termHeight || width > termWidth)
+	{
+		endwin();
+		std::cout << "❌ Terminal too small: resize to at least "
+		          << width << "x" << height << std::endl;
+		exit(1);
+	}
+
+	noecho();
+	nodelay(stdscr, TRUE);
+	cbreak();
+	start_color();
 	init_pair(1, COLOR_GREEN, COLOR_BLACK);
 	init_pair(2, COLOR_RED, COLOR_BLACK);
 }
@@ -40,6 +72,7 @@ void	GuiNcurses::init(int width, int height)
  */
 void	GuiNcurses::render(const GameState& state)
 {
+	clear();
 	drawWalls(_screenWidth, _screenHeight);
 	drawSnake(state.getSnake().getBody());
 	drawFood(state.getFood());
@@ -59,7 +92,6 @@ void	GuiNcurses::render(const GameState& state)
 Input GuiNcurses::getInput()
 {
 	int key = getch();
-
 	if (key == 27) // Séquence d'échappement : flèche ?
 	{
 		int second = getch();
@@ -80,7 +112,6 @@ Input GuiNcurses::getInput()
 	}
 	if (key == 'q')
 		return Input::EXIT;
-
 	return Input::NONE;
 }
 

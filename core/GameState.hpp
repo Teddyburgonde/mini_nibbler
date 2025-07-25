@@ -18,7 +18,7 @@
 class GameState
 {
 	public:
-		GameState();
+		GameState(int width, int height);
 		GameState(const GameState& copy);
 		GameState& operator=(const GameState& copy);
 		~GameState();
@@ -39,4 +39,6 @@ class GameState
 		Point	food;
 		int		_score;
 		bool	finished;
+		int		_width;
+		int		_height;
 };
