@@ -116,7 +116,7 @@ void GameState::update()
 		increaseScore(10);
 		generateFood();
 	}
-	if (_score >= 100)
+	if (_score >= 50)
 		finished = true;
 }
 

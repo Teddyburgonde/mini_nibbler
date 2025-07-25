@@ -121,6 +121,14 @@ void	GuiNcurses::cleanup()
 	endwin();
 }
 
+
+/**
+ * @brief Affiche une fenêtre popup indiquant que le joueur a perdu.
+ * 
+ * Cette fonction crée une petite fenêtre centrée à l'écran, avec un message
+ * "GAME OVER". Elle attend que l'utilisateur appuie sur la touche 'q'
+ * pour fermer proprement la fenêtre et continuer le nettoyage.
+ */
 void GuiNcurses::showGameOver()
 {
 	int winHeight = 5;
@@ -138,5 +146,31 @@ void GuiNcurses::showGameOver()
 	int ch;
 	while ((ch = getch()) != 'q') {}
 
-	delwin(popup); // Libère la fenêtre
+	delwin(popup);
+}
+
+/**
+ * @brief Affiche une fenêtre popup de victoire.
+ * 
+ * Cette fonction crée une petite fenêtre centrée à l'écran, avec un message
+ * "YOU WIN". Elle attend que l'utilisateur appuie sur la touche 'q'
+ * pour fermer proprement la fenêtre avant de quitter le jeu.
+ */
+void GuiNcurses::showVictory()
+{
+	int winHeight = 5;
+	int winWidth = 30;
+	int startY = (_screenHeight - winHeight) / 2;
+	int startX = (_screenWidth - winWidth) / 2;
+
+	WINDOW* popup = newwin(winHeight, winWidth, startY, startX);
+	box(popup, 0, 0); // Dessine un cadre
+	mvwprintw(popup, 1, 10, "🎉 YOU WIN!");
+	mvwprintw(popup, 2, 5, "Press q to exit...");
+	wrefresh(popup);
+
+	int ch;
+	while ((ch = getch()) != 'q') {}
+
+	delwin(popup);
 }

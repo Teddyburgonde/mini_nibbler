@@ -46,7 +46,10 @@ int main(int argc, char **argv)
 		gui->render(game);
 		usleep(100000);
 	}
-	gui->showGameOver();
+	if (game.getScore() >= 50)
+		gui->showVictory();
+	else
+		gui->showGameOver();
 	gui->cleanup();
 	delete gui;
 	return (0);

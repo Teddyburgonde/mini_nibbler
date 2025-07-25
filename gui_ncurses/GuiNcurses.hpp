@@ -20,6 +20,7 @@ class GuiNcurses : public IGui
 		~GuiNcurses() override = default;
 	private:
 		void checkTerminalSize(int requiredWidth, int requiredHeight);
+		void showVictory() override;
 		void showGameOver() override;
 		int	_screenWidth;
 		int	_screenHeight;
