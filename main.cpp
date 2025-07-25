@@ -32,7 +32,7 @@ int main(int argc, char **argv)
 		return 1;
 	}
 	bool quitByPlayer = false;
-	setlocale(LC_ALL, "");
+	setlocale(LC_ALL, ""); // Pour les émojis
 	IGui* gui = new GuiNcurses();
 	gui->init(width, height);
 	GameState game(width, height);
