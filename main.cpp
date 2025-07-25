@@ -31,6 +31,7 @@ int main(int argc, char **argv)
 		std::cout << "Error: size must be positive integers\n";
 		return 1;
 	}
+	bool quitByPlayer = false;
 	setlocale(LC_ALL, "");
 	IGui* gui = new GuiNcurses();
 	gui->init(width, height);
@@ -40,16 +41,22 @@ int main(int argc, char **argv)
 	{
 		Input input = gui->getInput();
 		if (input == Input::EXIT)
+		{
+			quitByPlayer = true;
 			break;
+		}
 		game.setDirection(input);
 		game.update();
 		gui->render(game);
 		usleep(100000);
 	}
-	if (game.getScore() >= 50)
-		gui->showVictory();
-	else
-		gui->showGameOver();
+	if (!quitByPlayer)
+	{
+		if (game.getScore() >= 100)
+			gui->showVictory();
+		else
+			gui->showGameOver();
+	}
 	gui->cleanup();
 	delete gui;
 	return (0);
