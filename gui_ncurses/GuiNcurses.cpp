@@ -1,25 +1,31 @@
 #include "GuiNcurses.hpp"
 
 /**
- * @brief Initialise la fenêtre ncurses et les paramètres d'affichage.
+ * @brief Initialise la fenêtre ncurses sans dépendre de keypad() ni curs_set().
  * 
- * Configure la taille de l'écran, active la gestion des couleurs,
- * désactive l'affichage des touches tapées et cache le curseur.
- * Active aussi les touches directionnelles et la lecture non bloquante.
+ * Configure l'affichage pour un fonctionnement non bloquant,
+ * sans echo clavier, et active les couleurs pour le rendu.
+ * Cette version est compatible avec les environnements où keypad()
+ * ou curs_set() provoquent des blocages ou des crashs.
  *
- * @param width Largeur de la fenêtre de jeu.
- * @param height Hauteur de la fenêtre de jeu.
+ * @param width Largeur de l'écran de jeu.
+ * @param height Hauteur de l'écran de jeu.
  */
 void	GuiNcurses::init(int width, int height)
 {
 	_screenWidth = width;
 	_screenHeight = height;
-	initscr();
-	noecho();
-	curs_set(0);
-	keypad(stdscr, TRUE);
-	nodelay(stdscr, TRUE);
-	start_color();
+
+	WINDOW* win = initscr();
+	if (win == nullptr)
+	{
+		std::cout << "initscr() failed!" << std::endl;
+		return;
+	}
+	noecho();                  // Ne pas afficher les caractères tapés
+	nodelay(stdscr, TRUE);     // getch() devient non bloquant
+	cbreak();                  // Lecture directe sans attendre ENTER
+	start_color();             // Active les couleurs
 	init_pair(1, COLOR_GREEN, COLOR_BLACK);
 	init_pair(2, COLOR_RED, COLOR_BLACK);
 }
@@ -42,27 +48,39 @@ void	GuiNcurses::render(const GameState& state)
 
 
 /**
- * @brief Récupère l'entrée clavier de l'utilisateur.
+ * @brief Récupère l'entrée clavier de l'utilisateur sans utiliser keypad().
  * 
- * Traduit les flèches directionnelles et les touches spécifiques
- * (ex: 'q' ou Échap) en valeurs de l'énumération Input.
+ * Détecte manuellement les séquences de touches pour reconnaître les
+ * flèches directionnelles (via les codes ESC [ A, etc.). Gère aussi
+ * les touches 'q' et Échap pour quitter le jeu.
  *
- * @return Input représentant la touche appuyée.
+ * @return Input représentant la direction ou l'action de l'utilisateur.
  */
 Input GuiNcurses::getInput()
 {
-	int	key = getch();
+	int key = getch();
 
-	if (key == KEY_UP)
-		return Input::UP;
-	if (key == KEY_DOWN)
-		return Input::DOWN;
-	if (key == KEY_LEFT)
-		return Input::LEFT;
-	if (key == KEY_RIGHT)
-		return Input::RIGHT;
-	if (key == 'q' || key == 27)
+	if (key == 27) // Séquence d'échappement : flèche ?
+	{
+		int second = getch();
+		int third = getch();
+
+		if (second == 91)
+		{
+			if (third == 65)
+				return Input::UP;
+			if (third == 66)
+				return Input::DOWN;
+			if (third == 67)
+				return Input::RIGHT;
+			if (third == 68)
+				return Input::LEFT;
+		}
+		return Input::EXIT; // touche ESC seule
+	}
+	if (key == 'q')
 		return Input::EXIT;
+
 	return Input::NONE;
 }
 

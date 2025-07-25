@@ -32,11 +32,14 @@ int main(int argc, char **argv)
 	}
 
 	IGui* gui = new GuiNcurses();
+	std::cout << "Avant init" << std::endl;
 	gui->init(width, height);
+	std::cout << "Apres init" << std::endl;
 	GameState game;
 
 	while (!game.isFinished())
 	{
+		std::cout << "boucle" << std::endl;
 		Input input = gui->getInput();
 		game.setDirection(input);
 		game.update();
