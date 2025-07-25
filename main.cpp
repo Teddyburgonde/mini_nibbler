@@ -39,6 +39,8 @@ int main(int argc, char **argv)
 	while (!game.isFinished())
 	{
 		Input input = gui->getInput();
+		if (input == Input::EXIT)
+			break;
 		game.setDirection(input);
 		game.update();
 		gui->render(game);

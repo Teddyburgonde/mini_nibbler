@@ -1,36 +1,5 @@
 #include "GuiNcurses.hpp"
 
-/**
- * @brief Initialise la fenêtre ncurses sans dépendre de keypad() ni curs_set().
- * 
- * Configure l'affichage pour un fonctionnement non bloquant,
- * sans echo clavier, et active les couleurs pour le rendu.
- * Cette version est compatible avec les environnements où keypad()
- * ou curs_set() provoquent des blocages ou des crashs.
- *
- * @param width Largeur de l'écran de jeu.
- * @param height Hauteur de l'écran de jeu.
- */
-// void	GuiNcurses::init(int width, int height)
-// {
-// 	_screenWidth = width;
-// 	_screenHeight = height;
-
-// 	WINDOW* win = initscr();
-// 	if (win == nullptr)
-// 	{
-// 		std::cout << "initscr() failed!" << std::endl;
-// 		return;
-// 	}
-// 	noecho();                  // Ne pas afficher les caractères tapés
-// 	nodelay(stdscr, TRUE);     // getch() devient non bloquant
-// 	cbreak();                  // Lecture directe sans attendre ENTER
-// 	start_color();             // Active les couleurs
-// 	init_pair(1, COLOR_GREEN, COLOR_BLACK);
-// 	init_pair(2, COLOR_RED, COLOR_BLACK);
-// }
-
-
 void GuiNcurses::init(int width, int height)
 {
 	_screenWidth = width;
