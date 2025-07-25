@@ -15,13 +15,11 @@ class Game
 	public:
 		Game(int width, int height);
 		~Game();
-		void	loop();
 		void	generateRandomFoodPosition();
 
 	private:
 		Snake	snake;
 		Point	food;
-		bool	gameOver;
 		int		width;
 		int		height;
 };

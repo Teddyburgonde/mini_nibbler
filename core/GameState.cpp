@@ -93,12 +93,22 @@ bool GameState::isFinished() const
 void GameState::update()
 {
 	snake.move();
-	// Point head = snake.getBody().front();
-	// if (head.x <= 0 || head.x >= _width - 1 || head.y <= 0 || head.y >= _height - 1)
-	// {
-	// 	finished = true;
-	// 	return;
-	// }
+
+	Point head = snake.getBody().front();
+
+	// Collision mur
+	if (head.x <= 0 || head.x >= _width - 1 || head.y <= 0 || head.y >= _height - 1)
+	{
+		finished = true;
+		return;
+	}
+
+	// Collision avec soi-même
+	if (snake.checkCollision(head, true))
+	{
+		finished = true;
+		return;
+	}
 
 	if (snake.getBody().front().x == food.x && snake.getBody().front().y == food.y)
 	{

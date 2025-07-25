@@ -1,6 +1,7 @@
 #include "core/Game.hpp"
 #include "includes/IGui.hpp"
 #include "gui_ncurses/GuiNcurses.hpp"
+#include <unistd.h>
 
 /**
  * @file main.cpp
@@ -15,7 +16,6 @@
  * 
  * À la fin, la mémoire est libérée et la fenêtre nettoyée proprement.
  */
-#include <unistd.h>
 int main(int argc, char **argv)
 {
 	if (argc != 3)

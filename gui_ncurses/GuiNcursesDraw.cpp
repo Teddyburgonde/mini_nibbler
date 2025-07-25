@@ -56,11 +56,11 @@ void drawSnake(const std::deque<Point>& snake)
 	if (snake.empty())
 		return;
 	attron(COLOR_PAIR(1));
-	mvaddch(snake[0].y, snake[0].x, '@'); // Tête
+	mvaddch(snake[0].y, snake[0].x, '@');
 	attroff(COLOR_PAIR(1));
 
 	for (size_t i = 1; i < snake.size(); ++i)
-		mvaddch(snake[i].y, snake[i].x, 'O'); // Corps
+		mvaddch(snake[i].y, snake[i].x, 'O');
 }
 
 /**

@@ -69,11 +69,12 @@ void Snake::grow()
 /**
  * @brief Vérifie si la position donnée entre en collision avec le corps du serpent
  */
-bool Snake::checkCollision(const Point& pos) const
+bool Snake::checkCollision(const Point& pos, bool ignoreHead) const
 {
-	for (const Point& part : body)
+	size_t start = ignoreHead ? 1 : 0;
+	for (size_t i = start; i < body.size(); ++i)
 	{
-		if (part.x == pos.x && part.y == pos.y)
+		if (body[i].x == pos.x && body[i].y == pos.y)
 			return true;
 	}
 	return false;
