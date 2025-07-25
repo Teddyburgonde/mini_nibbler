@@ -1,28 +1,51 @@
 #include "GuiNcurses.hpp"
 
+/**
+ * @brief Vérifie si le terminal est assez grand pour la fenêtre demandée.
+ * 
+ * Cette fonction compare les dimensions du terminal réel avec les dimensions
+ * requises pour le jeu. Si le terminal est trop petit, le programme se ferme
+ * proprement avec un message d'erreur explicite.
+ *
+ * @param requiredWidth Largeur minimale requise pour la fenêtre.
+ * @param requiredHeight Hauteur minimale requise pour la fenêtre.
+ */
+void GuiNcurses::checkTerminalSize(int requiredWidth, int requiredHeight)
+{
+	int termHeight, termWidth;
+	getmaxyx(stdscr, termHeight, termWidth);
+	if (requiredHeight > termHeight || requiredWidth > termWidth)
+	{
+		endwin();
+		std::cout << "❌ Terminal too small: resize to at least "
+		          << requiredWidth << "x" << requiredHeight << std::endl;
+		exit(1);
+	}
+}
+
+/**
+ * @brief Initialise la fenêtre ncurses et les paramètres d'affichage.
+ * 
+ * Cette fonction configure l'affichage du terminal pour le jeu Snake.
+ * Elle vérifie la taille du terminal, désactive l'écho clavier, active
+ * les couleurs, la lecture non bloquante, et initialise les paires de couleurs.
+ *
+ * @param width Largeur de la zone de jeu.
+ * @param height Hauteur de la zone de jeu.
+ */
 void GuiNcurses::init(int width, int height)
 {
 	_screenWidth = width;
 	_screenHeight = height;
 
 	WINDOW* win = initscr();
+	refresh();
 	if (win == nullptr)
 	{
 		std::cout << "initscr() failed!" << std::endl;
 		return;
 	}
-
-	// Vérification réelle de la taille ici
-	int termHeight, termWidth;
-	getmaxyx(stdscr, termHeight, termWidth);
-	if (height > termHeight || width > termWidth)
-	{
-		endwin();
-		std::cout << "❌ Terminal too small: resize to at least "
-		          << width << "x" << height << std::endl;
-		exit(1);
-	}
-
+	checkTerminalSize(width, height); 
 	noecho();
 	nodelay(stdscr, TRUE);
 	cbreak();
@@ -52,16 +75,21 @@ void	GuiNcurses::render(const GameState& state)
 /**
  * @brief Récupère l'entrée clavier de l'utilisateur sans utiliser keypad().
  * 
- * Détecte manuellement les séquences de touches pour reconnaître les
- * flèches directionnelles (via les codes ESC [ A, etc.). Gère aussi
- * les touches 'q' et Échap pour quitter le jeu.
+ * Cette fonction intercepte les séquences de touches pour détecter :
+ * - Les flèches directionnelles (haut, bas, gauche, droite) via les séquences ESC [ A/B/C/D
+ * - La touche 'q' ou la touche Échap seule pour quitter le jeu
+ * 
+ * Les flèches sont reconnues en lisant les trois codes successifs :
+ * - 27 : ESC
+ * - 91 : [
+ * - 65–68 : A (haut), B (bas), C (droite), D (gauche)
  *
- * @return Input représentant la direction ou l'action de l'utilisateur.
+ * @return Input Enum représentant la direction ou une commande spéciale.
  */
 Input GuiNcurses::getInput()
 {
 	int key = getch();
-	if (key == 27) // Séquence d'échappement : flèche ?
+	if (key == 27)
 	{
 		int second = getch();
 		int third = getch();
@@ -77,7 +105,7 @@ Input GuiNcurses::getInput()
 			if (third == 68)
 				return Input::LEFT;
 		}
-		return Input::EXIT; // touche ESC seule
+		return Input::EXIT;
 	}
 	if (key == 'q')
 		return Input::EXIT;

@@ -19,6 +19,7 @@ class GuiNcurses : public IGui
 		void	cleanup() override;
 		~GuiNcurses() override = default;
 	private:
+		void checkTerminalSize(int requiredWidth, int requiredHeight);
 		int	_screenWidth;
 		int	_screenHeight;
 };
