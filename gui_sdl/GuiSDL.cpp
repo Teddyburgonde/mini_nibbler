@@ -63,6 +63,89 @@ void    GuiSDL::init(int width, int height)
 	}
 }
 
+/**
+ * @brief Affiche l'état actuel du jeu à l'écran avec SDL.
+ * 
+ * Cette fonction efface l'écran, puis dessine :
+ * - le serpent (en vert, case par case)
+ * - la nourriture (en rouge)
+ * 
+ * Chaque case logique du jeu est représentée par un carré de 20x20 pixels.
+ * Le tout est ensuite affiché via SDL_RenderPresent().
+ * 
+ * @param state Référence vers l'état actuel du jeu (serpent, nourriture, etc.).
+ */
+void	GuiSDL::render(const GameState& state)
+{
+	SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 255); // fond noir
+	SDL_RenderClear(_renderer);
+
+	// Dessine le serpent
+	SDL_SetRenderDrawColor(_renderer, 0, 255, 0, 255); // vert
+	for (const Point& p : state.getSnake().getBody())
+	{
+		SDL_Rect rect = { p.x * 20, p.y * 20, 20, 20 };
+		SDL_RenderFillRect(_renderer, &rect);
+	}
+
+	// Dessine la nourriture
+	SDL_SetRenderDrawColor(_renderer, 255, 0, 0, 255); // rouge
+	Point food = state.getFood();
+	SDL_Rect foodRect = { food.x * 20, food.y * 20, 20, 20 };
+	SDL_RenderFillRect(_renderer, &foodRect);
+
+	// Affiche le rendu à l'écran
+	SDL_RenderPresent(_renderer);
+}
+
+/**
+ * @brief Gère les entrées clavier via SDL.
+ * 
+ * Utilise SDL_PollEvent() pour détecter :
+ * - les flèches directionnelles (SDLK_UP, etc.)
+ * - les touches 'q' ou Échap pour quitter
+ * - les touches '1', '2', '3' pour changer dynamiquement de GUI
+ * - les événements SDL_QUIT (fermeture fenêtre)
+ * 
+ * Retourne un Input correspondant à l'action utilisateur.
+ * 
+ * @return Input La direction ou l'action détectée par l'utilisateur.
+ */
+Input	GuiSDL::getInput()
+{
+	SDL_Event event;
+	while (SDL_PollEvent(&event))
+	{
+		if (event.type == SDL_QUIT)
+			return Input::EXIT;
+
+		if (event.type == SDL_KEYDOWN)
+		{
+			switch (event.key.keysym.sym)
+			{
+				case SDLK_UP:
+					return Input::UP;
+				case SDLK_DOWN:
+					return Input::DOWN;
+				case SDLK_LEFT:
+					return Input::LEFT;
+				case SDLK_RIGHT:
+					return Input::RIGHT;
+				case SDLK_1: 
+					return Input::SWITCH_TO_1;
+				case SDLK_2: 
+					return Input::SWITCH_TO_2;
+				case SDLK_3: 
+					return Input::SWITCH_TO_3;
+				case SDLK_ESCAPE:
+				case SDLK_q:     
+					return Input::EXIT;
+			}
+		}
+	}
+	return Input::NONE;
+}
+
 
 
 // #include <SDL2/SDL.h>

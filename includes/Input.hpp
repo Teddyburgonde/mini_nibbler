@@ -17,5 +17,8 @@ enum Input
 	LEFT,
 	RIGHT,
 	EXIT,
-	NONE
+	NONE,
+	SWITCH_TO_1,
+	SWITCH_TO_2,
+	SWITCH_TO_3
 };

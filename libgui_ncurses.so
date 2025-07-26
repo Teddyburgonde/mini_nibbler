@@ -1,0 +1,1 @@
+// extern "C" IGui* createGui() { return new GuiSDL(); }

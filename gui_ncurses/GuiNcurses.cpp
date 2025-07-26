@@ -74,18 +74,16 @@ void	GuiNcurses::render(const GameState& state)
 
 
 /**
- * @brief Récupère l'entrée clavier de l'utilisateur sans utiliser keypad().
+ * @brief Lit l'entrée utilisateur depuis le clavier en mode ncurses.
  * 
- * Cette fonction intercepte les séquences de touches pour détecter :
- * - Les flèches directionnelles (haut, bas, gauche, droite) via les séquences ESC [ A/B/C/D
- * - La touche 'q' ou la touche Échap seule pour quitter le jeu
+ * Cette fonction lit les séquences de touches via `getch()` :
+ * - Flèches directionnelles : détection manuelle (ESC [ A/B/C/D)
+ * - Touche 'q' ou Échap : quitte le jeu
+ * - Touches '1', '2', '3' : changent dynamiquement de GUI
  * 
- * Les flèches sont reconnues en lisant les trois codes successifs :
- * - 27 : ESC
- * - 91 : [
- * - 65–68 : A (haut), B (bas), C (droite), D (gauche)
- *
- * @return Input Enum représentant la direction ou une commande spéciale.
+ * Fonction compatible avec les environnements ncurses sans `keypad()`.
+ * 
+ * @return Input La direction ou l'action utilisateur détectée.
  */
 Input GuiNcurses::getInput()
 {
@@ -105,6 +103,12 @@ Input GuiNcurses::getInput()
 				return Input::RIGHT;
 			if (third == 68)
 				return Input::LEFT;
+			if (key == '1') 
+				return Input::SWITCH_TO_1;
+			if (key == '2') 
+				return Input::SWITCH_TO_2;
+			if (key == '3') 
+				return Input::SWITCH_TO_3;
 		}
 		return Input::EXIT;
 	}
