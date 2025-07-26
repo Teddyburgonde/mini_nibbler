@@ -16,12 +16,12 @@ class GuiNcurses : public IGui
 		void	init(int width, int height) override;
 		void	render(const GameState& state) override;
 		Input	getInput() override;
+		void	checkTerminalSize(int requiredWidth, int requiredHeight);
+		void	showVictory() override;
+		void	showGameOver() override;
 		void	cleanup() override;
 		~GuiNcurses() override = default;
 	private:
-		void checkTerminalSize(int requiredWidth, int requiredHeight);
-		void showVictory() override;
-		void showGameOver() override;
 		int	_screenWidth;
 		int	_screenHeight;
 };
