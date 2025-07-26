@@ -72,22 +72,21 @@ void	GuiNcurses::render(const GameState& state)
 	refresh();
 }
 
-
 /**
- * @brief Lit l'entrée utilisateur depuis le clavier en mode ncurses.
+ * @brief Récupère l'entrée clavier de l'utilisateur via ncurses.
  * 
- * Cette fonction lit les séquences de touches via `getch()` :
- * - Flèches directionnelles : détection manuelle (ESC [ A/B/C/D)
- * - Touche 'q' ou Échap : quitte le jeu
- * - Touches '1', '2', '3' : changent dynamiquement de GUI
+ * Gère les touches suivantes :
+ * - Flèches directionnelles (haut, bas, gauche, droite)
+ * - Touche ESC ou 'q' pour quitter
+ * - Touche '1', '2', '3' pour changer dynamiquement de GUI
  * 
- * Fonction compatible avec les environnements ncurses sans `keypad()`.
- * 
- * @return Input La direction ou l'action utilisateur détectée.
+ * @return Input Enum correspondant à l'action détectée.
  */
 Input GuiNcurses::getInput()
 {
 	int key = getch();
+
+	// Flèches directionnelles
 	if (key == 27)
 	{
 		int second = getch();
@@ -95,27 +94,25 @@ Input GuiNcurses::getInput()
 
 		if (second == 91)
 		{
-			if (third == 65)
-				return Input::UP;
-			if (third == 66)
-				return Input::DOWN;
-			if (third == 67)
-				return Input::RIGHT;
-			if (third == 68)
-				return Input::LEFT;
-			if (key == '1') 
-				return Input::SWITCH_TO_1;
-			if (key == '2') 
-				return Input::SWITCH_TO_2;
-			if (key == '3') 
-				return Input::SWITCH_TO_3;
+			if (third == 65) return Input::UP;
+			if (third == 66) return Input::DOWN;
+			if (third == 67) return Input::RIGHT;
+			if (third == 68) return Input::LEFT;
 		}
 		return Input::EXIT;
 	}
+
+	if (key == '1')
+		return Input::SWITCH_TO_1;
+	if (key == '2')
+		return Input::SWITCH_TO_2;
+	if (key == '3')
+		return Input::SWITCH_TO_3;
 	if (key == 'q')
 		return Input::EXIT;
 	return Input::NONE;
 }
+
 
 /**
  * @brief Ferme proprement ncurses et restaure le terminal.

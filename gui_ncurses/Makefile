@@ -46,6 +46,7 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	$(CXX) $(OBJS) -o $(NAME) $(LDFLAGS)
+	cp $(NAME) ../
 	@echo "$(GREEN)[NCURSES] $(NAME) built successfully!$(RESET)"
 
 %.o : %.cpp
