@@ -123,8 +123,6 @@
 
 IGui* loadGui(const std::string& path, int width, int height)
 {
-	std::cout << "🔄 Loading GUI: " << path << std::endl;
-
 	void* handle = dlopen(path.c_str(), RTLD_LAZY);
 	if (!handle)
 	{
@@ -140,8 +138,6 @@ IGui* loadGui(const std::string& path, int width, int height)
 		dlclose(handle);
 		exit(1);
 	}
-
-	std::cout << "✅ GUI loaded successfully.\n";
 	IGui* gui = create();
 	gui->init(width, height);
 	return gui;
@@ -163,8 +159,6 @@ int main(int argc, char **argv)
 		return 1;
 	}
 	setlocale(LC_ALL, "");
-	
-	std::cout << "🚀 Starting Nibbler with SDL GUI...\n";
 	IGui* gui = loadGui("./libgui_sdl.so", width, height);
 
 	GameState game(width, height);
@@ -172,20 +166,18 @@ int main(int argc, char **argv)
 
 	while (!game.isFinished())
 	{
-		std::cout << "[🕹️] Waiting for input...\n";
 		Input input = gui->getInput();
 
 		// 🎛️ GUI switching
 		if (input == Input::SWITCH_TO_1)
 		{
-			std::cout << "🔄 Switching to Ncurses GUI...\n";
 			gui->cleanup(); delete gui;
 			gui = loadGui("./libgui_ncurses.so", width, height);
+			usleep(500000); 
 			continue;
 		}
 		else if (input == Input::SWITCH_TO_2)
 		{
-			std::cout << "🔄 Switching to SDL GUI...\n";
 			gui->cleanup(); delete gui;
 			gui = loadGui("./libgui_sdl.so", width, height);
 			continue;
@@ -195,15 +187,9 @@ int main(int argc, char **argv)
 			quitByPlayer = true;
 			break;
 		}
-
-
-		std::cout << "[➡️] Input received. Updating game...\n";
 		game.setDirection(input);
 		game.update();
-
-		std::cout << "[🖼️] Rendering frame...\n";
 		gui->render(game);
-
 		usleep(100000);
 	}
 	if (!quitByPlayer)
@@ -215,6 +201,5 @@ int main(int argc, char **argv)
 	}
 	gui->cleanup();
 	delete gui;
-	std::cout << "👋 Exiting cleanly.\n";
 	return 0;
 }

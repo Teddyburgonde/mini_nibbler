@@ -12,21 +12,27 @@ LDFLAGS = -ldl
 SRCS = main.cpp \
        core/Game.cpp \
 	   core/GameState.cpp \
-       core/Snake.cpp \
+       core/Snake.cpp
+
+#============== OBJECT FILES ================#
+OBJS = $(SRCS:.cpp=.o)
 
 #================= COLORS ===================#
 GREEN = \033[32m
 RESET = \033[0m
 
-#============== OBJECT FILES ================#
-OBJS = $(SRCS:.cpp=.o)
-
+#================== SUBDIRECTORIES ==========#
+SUBDIRS = gui_ncurses gui_sdl
 
 #================ UTILS PART ================#
 RM = rm -f
 
 #========== GENERATION BINARY FILES =========#
-all: $(NAME)
+all:
+	@for dir in $(SUBDIRS); do \
+		$(MAKE) -C $$dir; \
+	done
+	$(MAKE) $(NAME)
 
 $(NAME): $(OBJS)
 	$(CXX) $(OBJS) -o $(NAME) $(LDFLAGS)
@@ -36,11 +42,18 @@ $(NAME): $(OBJS)
 	$(CXX) $(CXXFLAGS) -Iincludes -c $< -o $@
 
 clean:
+	@for dir in $(SUBDIRS); do \
+		$(MAKE) -C $$dir clean; \
+	done
 	$(RM) $(OBJS)
 
 fclean: clean
+	@for dir in $(SUBDIRS); do \
+		$(MAKE) -C $$dir fclean; \
+	done
 	$(RM) $(NAME)
 
 re: fclean all
 
 .PHONY: all clean fclean re
+
