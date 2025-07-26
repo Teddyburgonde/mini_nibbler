@@ -68,7 +68,7 @@ int main(int argc, char **argv)
 	}
 	setlocale(LC_ALL, ""); // Pour les emojis UTF-8
 	
-	IGui* gui = loadGui("./libgui_ncurses.so", width, height);
+	IGui* gui = loadGui("./gui_ncurses/libgui_ncurses.so", width, height);
 	GameState game(width, height);
 	bool quitByPlayer = false;
 

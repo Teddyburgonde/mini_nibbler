@@ -6,36 +6,34 @@ CXX = c++
 
 #=================== FLAGS ==================#
 CXXFLAGS = -Wall -Wextra -Werror -std=c++17
-LDFLAGS = -lncurses
+LDFLAGS = -ldl
 
 #================== SOURCES =================#
 SRCS = main.cpp \
        core/Game.cpp \
 	   core/GameState.cpp \
        core/Snake.cpp \
-       gui_ncurses/GuiNcurses.cpp \
-	   gui_ncurses/GuiNcursesDraw.cpp \
-
-
-#============== OBJECT FILES ================#
-OBJS = $(SRCS:.cpp=.o)
-
-#========== GENERATION BINARY FILES =========#
-%.o : %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 #================= COLORS ===================#
 GREEN = \033[32m
 RESET = \033[0m
 
+#============== OBJECT FILES ================#
+OBJS = $(SRCS:.cpp=.o)
+
+
 #================ UTILS PART ================#
 RM = rm -f
 
+#========== GENERATION BINARY FILES =========#
 all: $(NAME)
 
 $(NAME): $(OBJS)
 	$(CXX) $(OBJS) -o $(NAME) $(LDFLAGS)
-	@echo "$(GREEN)EXECUTABLE READY!$(RESET)"
+	@echo "$(GREEN)[MAIN] $(NAME) compiled with dlopen() support.$(RESET)"
+
+%.o : %.cpp
+	$(CXX) $(CXXFLAGS) -Iincludes -c $< -o $@
 
 clean:
 	$(RM) $(OBJS)
