@@ -146,12 +146,24 @@ Input	GuiSDL::getInput()
 	return Input::NONE;
 }
 
+// void GuiSDL::cleanup() 
+// {
+// 	SDL_DestroyRenderer(_renderer);
+//     SDL_DestroyWindow(_window);
+//     SDL_Quit();
+// }
+
 void GuiSDL::cleanup() 
 {
-	SDL_DestroyRenderer(_renderer);
-    SDL_DestroyWindow(_window);
-    SDL_Quit();
+	if (_renderer) SDL_DestroyRenderer(_renderer);
+	if (_window) SDL_DestroyWindow(_window);
+	SDL_Quit();
+
+	// 🔧 Très utile pour restaurer le terminal proprement
+	system("stty sane");
 }
+
+
 
 // TEMPORAIRE ! 
 void GuiSDL::showGameOver()

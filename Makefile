@@ -5,8 +5,8 @@ NAME = nibbler
 CXX = c++
 
 #=================== FLAGS ==================#
-CXXFLAGS = -Wall -Wextra -Werror -std=c++17
-LDFLAGS = -ldl
+CXXFLAGS = -Wall -Wextra -Werror -std=c++17 -Iincludes -I/opt/homebrew/include/SDL2
+LDFLAGS = -ldl -lncurses -L/opt/homebrew/lib -lSDL2
 
 #================== SOURCES =================#
 SRCS = main.cpp \

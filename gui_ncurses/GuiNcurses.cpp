@@ -37,8 +37,8 @@ void GuiNcurses::init(int width, int height)
 {
 	_screenWidth = width;
 	_screenHeight = height;
-
 	WINDOW* win = initscr();
+	//set_escdelay(25);
 	refresh();
 	if (win == nullptr)
 	{
@@ -54,6 +54,11 @@ void GuiNcurses::init(int width, int height)
 	init_pair(1, COLOR_GREEN, COLOR_BLACK);
 	init_pair(2, COLOR_RED, COLOR_BLACK);
 }
+
+
+
+
+
 
 /**
  * @brief Dessine tous les éléments du jeu à l'écran.
@@ -94,14 +99,17 @@ Input GuiNcurses::getInput()
 
 		if (second == 91)
 		{
-			if (third == 65) return Input::UP;
-			if (third == 66) return Input::DOWN;
-			if (third == 67) return Input::RIGHT;
-			if (third == 68) return Input::LEFT;
+			if (third == 65) 
+				return Input::UP;
+			if (third == 66) 
+				return Input::DOWN;
+			if (third == 67) 
+				return Input::RIGHT;
+			if (third == 68) 
+				return Input::LEFT;
 		}
 		return Input::EXIT;
 	}
-
 	if (key == '1')
 		return Input::SWITCH_TO_1;
 	if (key == '2')
@@ -112,7 +120,6 @@ Input GuiNcurses::getInput()
 		return Input::EXIT;
 	return Input::NONE;
 }
-
 
 /**
  * @brief Ferme proprement ncurses et restaure le terminal.

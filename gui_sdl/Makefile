@@ -29,7 +29,6 @@ LDFLAGS = -L/opt/homebrew/lib -lSDL2 -shared  # ✅ SDL2 libs pour macOS
 
 #================== SOURCES =================#
 SRCS =  GuiSDL.cpp \
-        GuiSDLDraw.cpp \
         entrypoint.cpp \
         ../core/GameState.cpp \
         ../core/Snake.cpp

@@ -4,7 +4,6 @@
 #include <SDL.h> // MAC
 
 #include "../core/GameState.hpp"
-#include "GuiSDLDraw.hpp"
 
 
 /**
