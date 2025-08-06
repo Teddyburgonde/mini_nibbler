@@ -169,10 +169,10 @@ void GuiSDL::cleanup()
 void GuiSDL::showGameOver()
 {
 	// Tu peux ajouter un petit texte ou même laisser vide pour l’instant
-	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Game Over", "💀 You lost!", _window);
+	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Game Over", "You lost!", _window);
 }
 
 void GuiSDL::showVictory()
 {
-	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Victory!", "🎉 You won!", _window);
+	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Victory!", "You won!", _window);
 }

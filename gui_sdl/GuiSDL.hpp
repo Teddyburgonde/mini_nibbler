@@ -1,7 +1,6 @@
 #pragma once
 #include "../includes/IGui.hpp"
-// #include <SDL2/SDL.h>
-#include <SDL.h> // MAC
+#include <SDL2/SDL.h>
 
 #include "../core/GameState.hpp"
 

@@ -146,7 +146,7 @@ void GuiNcurses::showGameOver()
 
 	WINDOW* popup = newwin(winHeight, winWidth, startY, startX);
 	box(popup, 0, 0); // Dessine un cadre
-	mvwprintw(popup, 1, 10, "GAME OVER! 💀");
+	mvwprintw(popup, 1, 10, "GAME OVER!");
 	mvwprintw(popup, 2, 5, "Press q to exit...");
 	wrefresh(popup);
 
@@ -173,7 +173,7 @@ void GuiNcurses::showVictory()
 
 	WINDOW* popup = newwin(winHeight, winWidth, startY, startX);
 	box(popup, 0, 0); // Dessine un cadre
-	mvwprintw(popup, 1, 10, "🎉 YOU WIN!");
+	mvwprintw(popup, 1, 10, "YOU WIN!");
 	mvwprintw(popup, 2, 5, "Press q to exit...");
 	wrefresh(popup);
 

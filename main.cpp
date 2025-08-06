@@ -85,7 +85,7 @@ int main(int argc, char **argv)
 	}
 	if (!quitByPlayer)
 	{
-		if (game.getScore() >= 100)
+		if (game.getScore() >= 50)
 			gui->showVictory();
 		else
 			gui->showGameOver();
