@@ -31,6 +31,21 @@ void GuiSDL::checkTerminalSize(int requiredWidth, int requiredHeight)
 	}
 }
 
+/**
+ * @brief Initialise la fenêtre et le moteur de rendu SDL pour le jeu.
+ * 
+ * Cette fonction configure la largeur et la hauteur du plateau de jeu,
+ * initialise le sous-système vidéo de SDL, vérifie que la taille de la
+ * zone de jeu est raisonnable via `checkTerminalSize()`, crée une
+ * fenêtre SDL centrée, puis initialise un moteur de rendu matériel
+ * accéléré.
+ * 
+ * En cas d'échec à l'une des étapes, la fonction affiche un message
+ * d'erreur sur la sortie standard et termine le programme avec `exit(1)`.
+ * 
+ * @param width  Largeur du plateau de jeu (en cases).
+ * @param height Hauteur du plateau de jeu (en cases).
+ */
 void    GuiSDL::init(int width, int height)
 {
     _screenWidth = width;
