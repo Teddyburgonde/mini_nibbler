@@ -21,8 +21,8 @@ class GuiSDL : public IGui
 		void	init(int width, int height) override;
 		void	render(const GameState& state) override;
 		Input	getInput() override;
-		void showVictory() override;
-		void showGameOver() override;
+		void	showVictory() override;
+		void	showGameOver() override;
 		void	cleanup() override;
 		~GuiSDL() override = default;
 	private:

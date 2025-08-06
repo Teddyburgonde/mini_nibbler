@@ -1,19 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                 Makefile – Compilation de libgui_ncurses.so (Ncurses GUI)   #
-#                                                                              #
-# Ce Makefile génère une bibliothèque partagée (libgui_ncurses.so) à partir   #
-# des fichiers GuiNcurses.cpp, GuiNcursesDraw.cpp et entrypoint.cpp.          #
-# Cette bibliothèque est utilisée dynamiquement via dlopen() dans le projet.  #
-#                                                                              #
-# Utilisation :                                                                #
-#    make         → Compile la bibliothèque .so                                #
-#    make clean   → Supprime les fichiers objets (.o)                          #
-#    make fclean  → Supprime aussi le .so                                      #
-#    make re      → Nettoie puis recompile tout                                #
-#                                                                              #
-# **************************************************************************** #
-
 #=================== NAME ===================#
 NAME = libgui_ncurses.so
 

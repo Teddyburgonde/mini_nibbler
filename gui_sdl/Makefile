@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#             Makefile – Compilation de libgui_sdl.so (SDL2 GUI – macOS)      #
-#                                                                              #
-# Ce Makefile compile une bibliothèque partagée (.so) avec SDL2 sur macOS.    #
-# Assurez-vous que SDL2 est installé via Homebrew :                           #
-#      ➤ brew install sdl2                                                     #
-#                                                                              #
-# Les options Linux sont commentées ci-dessous pour portabilité.              #
-#                                                                              #
-# **************************************************************************** #
-
 #=================== NAME ===================#
 NAME = libgui_sdl.so
 
@@ -17,15 +5,9 @@ NAME = libgui_sdl.so
 CXX = c++
 
 #=================== FLAGS ==================#
-CXXFLAGS = -Wall -Wextra -Werror -std=c++17 -fPIC \
-		   -I../includes \
-		   -I/opt/homebrew/include/SDL2   # ✅ SDL2 headers pour macOS
 
-LDFLAGS = -L/opt/homebrew/lib -lSDL2 -shared  # ✅ SDL2 libs pour macOS
-
-# ✅ Si tu es sous Linux, utilise à la place :
-#CXXFLAGS = -Wall -Wextra -Werror -std=c++17 -fPIC -I../includes -I/usr/include/SDL2
-#LDFLAGS = -L/usr/lib -lSDL2 -shared
+CXXFLAGS = -Wall -Wextra -Werror -std=c++17 -fPIC -I../includes -I/usr/include/SDL2
+LDFLAGS = -L/usr/lib -lSDL2 -shared
 
 #================== SOURCES =================#
 SRCS =  GuiSDL.cpp \
