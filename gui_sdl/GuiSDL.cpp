@@ -84,11 +84,12 @@ void    GuiSDL::init(int width, int height)
  * Cette fonction efface l'écran, puis dessine :
  * - le serpent (en vert, case par case)
  * - la nourriture (en rouge)
+ * - le score (via des blocs blancs, 1 bloc = 10 points)
  * 
  * Chaque case logique du jeu est représentée par un carré de 20x20 pixels.
  * Le tout est ensuite affiché via SDL_RenderPresent().
  * 
- * @param state Référence vers l'état actuel du jeu (serpent, nourriture, etc.).
+ * @param state Référence vers l'état actuel du jeu (serpent, nourriture, score, etc.).
  */
 void	GuiSDL::render(const GameState& state)
 {
@@ -109,6 +110,16 @@ void	GuiSDL::render(const GameState& state)
 	SDL_Rect foodRect = { food.x * 20, food.y * 20, 20, 20 };
 	SDL_RenderFillRect(_renderer, &foodRect);
 
+	// Affiche le score avec des blocs
+	int score = state.getScore();
+	int nbBlocks = score / 10; // 1 bloc = 10 points
+	SDL_SetRenderDrawColor(_renderer, 255, 255, 255, 255); // blanc
+	
+	for (int i = 0; i < nbBlocks; ++i)
+	{
+		SDL_Rect block = { 10 + i * 25, 10, 20, 20 };
+		SDL_RenderFillRect(_renderer, &block);
+	}
 	// Affiche le rendu à l'écran
 	SDL_RenderPresent(_renderer);
 }
