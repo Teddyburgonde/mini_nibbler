@@ -56,15 +56,16 @@ void GuiOpenGL::init(int width, int height)
 /**
  * @brief Affiche l'état actuel du jeu à l'écran avec OpenGL.
  * 
- * Cette fonction utilise OpenGL pour :
- * - effacer l'écran et définir la couleur de fond (noir)
- * - dessiner le serpent en vert, case par case
- * - dessiner la nourriture en rouge
+ * Cette fonction efface l'écran, puis dessine :
+ * - le serpent (en bleu cyan, case par case)
+ * - la nourriture (en orange clair)
+ * - les obstacles (en gris foncé, blocs fixes)
+ * - le score (via des blocs blancs, 1 bloc = 10 points)
  * 
- * Chaque case logique du jeu est représentée par un carré de 20x20 pixels.
- * Le tout est affiché à l'écran en fin de fonction via glfwSwapBuffers().
+ * Chaque case du jeu est représentée par un carré de 20x20 pixels.
+ * Le tout est affiché à l'écran via glfwSwapBuffers().
  * 
- * @param state Référence vers l'état actuel du jeu (serpent, nourriture, etc.).
+ * @param state Référence vers l'état actuel du jeu (serpent, nourriture, obstacles, score, etc.).
  */
 void GuiOpenGL::render(const GameState& state)
 {
@@ -117,10 +118,24 @@ void GuiOpenGL::render(const GameState& state)
 			glVertex2f(x, y + 20.0f);
 		glEnd();
 	}
+	// Dessine les obstacles (gris foncé)
+	glColor3f(0.4f, 0.4f, 0.4f);
+
+	for (const Point& p : state.getObstacles())
+	{
+		float x = p.x * 20.0f;
+		float y = p.y * 20.0f;
+
+		glBegin(GL_QUADS);
+			glVertex2f(x, y);
+			glVertex2f(x + 20.0f, y);
+			glVertex2f(x + 20.0f, y + 20.0f);
+			glVertex2f(x, y + 20.0f);
+		glEnd();
+	}
 
 	// Affiche la frame à l'écran
 	glfwSwapBuffers(_window);
-
 }
 
 
