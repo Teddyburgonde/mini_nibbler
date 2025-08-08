@@ -120,6 +120,17 @@ void	GuiSDL::render(const GameState& state)
 		SDL_Rect block = { 10 + i * 25, 10, 20, 20 };
 		SDL_RenderFillRect(_renderer, &block);
 	}
+
+	// Dessine les obstacles (gris foncé)
+	SDL_SetRenderDrawColor(_renderer, 100, 100, 100, 255);
+
+	for (const Point& p : state.getObstacles())
+	{
+		SDL_Rect rect = { p.x * 20, p.y * 20, 20, 20 };
+		SDL_RenderFillRect(_renderer, &rect);
+	}
+
+
 	// Affiche le rendu à l'écran
 	SDL_RenderPresent(_renderer);
 }
