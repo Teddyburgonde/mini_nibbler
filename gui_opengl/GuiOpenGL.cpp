@@ -70,7 +70,7 @@ void GuiOpenGL::render(const GameState& state)
 		float x = p.x * 20.0f;
 		float y = p.y * 20.0f;
 		
-		// Dessine une forme a 4 côtés
+		// Dessine une forme a 4 côtés (juste les points)
 		glBegin(GL_QUADS);
 			glVertex2f(x, y);
 			glVertex2f(x + 20.0f, y);
@@ -79,7 +79,7 @@ void GuiOpenGL::render(const GameState& state)
 		glEnd();
 	}
 
-	// 🍎 Dessine la nourriture (rouge)
+	// Dessine la nourriture (rouge)
 	Point food = state.getFood();
 	float fx = food.x * 20.0f;
 	float fy = food.y * 20.0f;
@@ -94,4 +94,79 @@ void GuiOpenGL::render(const GameState& state)
 
 	// Affiche la frame à l'écran
 	glfwSwapBuffers(_window);
+}
+
+
+/**
+ * @brief Gère les entrées clavier via GLFW (OpenGL).
+ * 
+ * Utilise glfwPollEvents() pour détecter :
+ * - les flèches directionnelles
+ * - les touches '1', '2', '3' pour changer de GUI
+ * - les touches 'q' ou Échap pour quitter
+ * 
+ * @return Input La direction ou l'action détectée par l'utilisateur.
+ */
+Input GuiOpenGL::getInput()
+{
+    glfwPollEvents();
+
+    if (glfwWindowShouldClose(_window))
+        return Input::EXIT;
+
+    if (glfwGetKey(_window, GLFW_KEY_UP) == GLFW_PRESS)
+        return Input::UP;
+    if (glfwGetKey(_window, GLFW_KEY_DOWN) == GLFW_PRESS)
+        return Input::DOWN;
+    if (glfwGetKey(_window, GLFW_KEY_LEFT) == GLFW_PRESS)
+        return Input::LEFT;
+    if (glfwGetKey(_window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+        return Input::RIGHT;
+
+    if (glfwGetKey(_window, GLFW_KEY_1) == GLFW_PRESS)
+        return Input::SWITCH_TO_1;
+    if (glfwGetKey(_window, GLFW_KEY_2) == GLFW_PRESS)
+        return Input::SWITCH_TO_2;
+    if (glfwGetKey(_window, GLFW_KEY_3) == GLFW_PRESS)
+        return Input::SWITCH_TO_3;
+
+    if (glfwGetKey(_window, GLFW_KEY_ESCAPE) == GLFW_PRESS ||
+        glfwGetKey(_window, GLFW_KEY_Q) == GLFW_PRESS)
+        return Input::EXIT;
+
+    return Input::NONE;
+}
+
+/**
+ * @brief Libère les ressources GLFW et réinitialise le terminal.
+ * 
+ * Détruit la fenêtre GLFW si elle existe, termine GLFW et
+ * restaure l'état du terminal avec la commande `stty sane`.
+ */
+void GuiOpenGL::cleanup()
+{
+	if (_window)
+		glfwDestroyWindow(_window);
+	glfwTerminate();
+	system("stty sane");
+}
+
+/**
+ * @brief Affiche une boîte de dialogue système indiquant la victoire (OpenGL).
+ * 
+ * Utilise la commande système `zenity` pour afficher une fenêtre "You won!".
+ */
+void GuiOpenGL::showVictory()
+{
+	system("zenity --info --text='🎉 You won!' --title='Victory'");
+}
+
+/**
+ * @brief Affiche une boîte de dialogue système indiquant la défaite (OpenGL).
+ * 
+ * Utilise la commande système `zenity` pour afficher une fenêtre "You lost!".
+ */
+void GuiOpenGL::showGameOver()
+{
+	system("zenity --error --text='💀 You lost...' --title='Defeat'");
 }

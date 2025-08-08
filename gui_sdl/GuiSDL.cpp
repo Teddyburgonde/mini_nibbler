@@ -161,32 +161,37 @@ Input	GuiSDL::getInput()
 	return Input::NONE;
 }
 
-// void GuiSDL::cleanup() 
-// {
-// 	SDL_DestroyRenderer(_renderer);
-//     SDL_DestroyWindow(_window);
-//     SDL_Quit();
-// }
-
+/**
+ * @brief Libère les ressources SDL et réinitialise le terminal.
+ * 
+ * Détruit le renderer et la fenêtre s'ils existent, quitte SDL
+ * et restaure l'état du terminal avec la commande `stty sane`.
+ */
 void GuiSDL::cleanup() 
 {
-	if (_renderer) SDL_DestroyRenderer(_renderer);
-	if (_window) SDL_DestroyWindow(_window);
+	if (_renderer) 
+		SDL_DestroyRenderer(_renderer);
+	if (_window) 
+		SDL_DestroyWindow(_window);
 	SDL_Quit();
-
-	// 🔧 Très utile pour restaurer le terminal proprement
 	system("stty sane");
 }
 
-
-
-// TEMPORAIRE ! 
+/**
+ * @brief Affiche une boîte de dialogue SDL indiquant la défaite.
+ * 
+ * Utilise SDL_ShowSimpleMessageBox avec une icône d'erreur et le message "You lost!".
+ */
 void GuiSDL::showGameOver()
 {
-	// Tu peux ajouter un petit texte ou même laisser vide pour l’instant
 	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Game Over", "You lost!", _window);
 }
 
+/**
+ * @brief Affiche une boîte de dialogue SDL indiquant la victoire.
+ * 
+ * Utilise SDL_ShowSimpleMessageBox avec une icône d'information et le message "You won!".
+ */
 void GuiSDL::showVictory()
 {
 	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Victory!", "You won!", _window);

@@ -73,6 +73,13 @@ int main(int argc, char **argv)
 			gui = loadGui("./libgui_ncurses.so", width, height);
 			continue;
 		}
+		else if (input == Input::SWITCH_TO_3)
+		{
+			gui->cleanup(); delete gui;
+			gui = loadGui("./libgui_opengl.so", width, height);
+			usleep(500000);
+			continue;
+		}
 		if (input == Input::EXIT)
 		{
 			quitByPlayer = true;
