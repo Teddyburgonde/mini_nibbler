@@ -22,7 +22,7 @@ GREEN = \033[32m
 RESET = \033[0m
 
 #================== SUBDIRECTORIES ==========#
-SUBDIRS = gui_ncurses gui_sdl
+SUBDIRS = gui_ncurses gui_sdl gui_opengl
 
 #================ UTILS PART ================#
 RM = rm -f
@@ -51,7 +51,7 @@ fclean: clean
 	@for dir in $(SUBDIRS); do \
 		$(MAKE) -C $$dir fclean; \
 	done
-	$(RM) $(NAME)
+	$(RM) $(NAME) *.so
 
 re: fclean all
 

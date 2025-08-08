@@ -13,7 +13,7 @@
  */
 void GuiOpenGL::init(int width, int height)
 {
-	_screenWidth = width;
+	_screenWidht = width;
 	_screenHeight = height;
 
 	if (!glfwInit())
