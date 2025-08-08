@@ -78,22 +78,67 @@ void    GuiSDL::init(int width, int height)
 	}
 }
 
+
 /**
- * @brief Affiche l'état actuel du jeu à l'écran avec SDL.
+ * @brief Affiche un menu d'aide simplifié dans la fenêtre SDL.
  * 
- * Cette fonction efface l'écran, puis dessine :
- * - le serpent (en vert, case par case)
- * - la nourriture (en rouge)
- * - les obstacles (en gris foncé, blocs fixes)
- * - le score (via des blocs blancs, 1 bloc = 10 points)
+ * Cette fonction efface l'écran puis dessine un ensemble de rectangles
+ * représentant les touches directionnelles (↑ ↓ ← →) sous forme de blocs blancs.
  * 
- * Chaque case logique du jeu est représentée par un carré de 20x20 pixels.
- * Le tout est ensuite affiché via SDL_RenderPresent().
+ * Elle est utilisée lorsque l'utilisateur active le menu avec la touche 'h',
+ * et met automatiquement la partie en pause.
+ */
+void GuiSDL::drawHelpMenu()
+{
+	SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 255); // fond noir
+	SDL_RenderClear(_renderer);
+
+	// Affiche des blocs symboliques pour les directions
+	SDL_SetRenderDrawColor(_renderer, 255, 255, 255, 255); // blanc
+
+	// "↑" en haut
+	SDL_Rect up = { 180, 60, 40, 40 };
+	SDL_RenderFillRect(_renderer, &up);
+
+	// "←" à gauche
+	SDL_Rect left = { 120, 120, 40, 40 };
+	SDL_RenderFillRect(_renderer, &left);
+
+	// "→" à droite
+	SDL_Rect right = { 240, 120, 40, 40 };
+	SDL_RenderFillRect(_renderer, &right);
+
+	// "↓" en bas
+	SDL_Rect down = { 180, 180, 40, 40 };
+	SDL_RenderFillRect(_renderer, &down);
+
+	SDL_RenderPresent(_renderer);
+}
+
+/**
+ * @brief Affiche l'état actuel du jeu dans la fenêtre SDL.
  * 
- * @param state Référence vers l'état actuel du jeu (serpent, nourriture, obstacles, score, etc.).
+ * Si le menu d'aide est activé (touche 'h'), cette fonction appelle
+ * drawHelpMenu() pour afficher un écran dédié avec les touches directionnelles.
+ * Sinon, elle affiche le jeu normalement :
+ * - Serpent (vert)
+ * - Nourriture (rouge)
+ * - Score (blocs blancs)
+ * - Obstacles (gris foncé)
+ * 
+ * Le rendu final est affiché avec SDL_RenderPresent().
+ * 
+ * @param state L'état actuel du jeu à afficher.
  */
 void	GuiSDL::render(const GameState& state)
 {
+	if (state.isHelpMenuActive())
+	{
+		drawHelpMenu();
+		return;
+	}
+
+	// 🎮 Affichage normal du jeu (quand le menu n'est pas actif)
 	SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 255); // fond noir
 	SDL_RenderClear(_renderer);
 
@@ -115,24 +160,21 @@ void	GuiSDL::render(const GameState& state)
 	int score = state.getScore();
 	int nbBlocks = score / 10; // 1 bloc = 10 points
 	SDL_SetRenderDrawColor(_renderer, 255, 255, 255, 255); // blanc
-	
 	for (int i = 0; i < nbBlocks; ++i)
 	{
 		SDL_Rect block = { 10 + i * 25, 10, 20, 20 };
 		SDL_RenderFillRect(_renderer, &block);
 	}
 
-	// Dessine les obstacles (gris foncé)
+	// Dessine les obstacles
 	SDL_SetRenderDrawColor(_renderer, 100, 100, 100, 255);
-
 	for (const Point& p : state.getObstacles())
 	{
 		SDL_Rect rect = { p.x * 20, p.y * 20, 20, 20 };
 		SDL_RenderFillRect(_renderer, &rect);
 	}
 
-
-	// Affiche le rendu à l'écran
+	// Affiche la frame finale
 	SDL_RenderPresent(_renderer);
 }
 
@@ -178,6 +220,8 @@ Input	GuiSDL::getInput()
 				case SDLK_ESCAPE:
 				case SDLK_q:     
 					return Input::EXIT;
+				case SDLK_h: 
+					return Input::HELP; 
 			}
 		}
 	}

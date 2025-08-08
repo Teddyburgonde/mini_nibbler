@@ -31,4 +31,5 @@ class GuiSDL : public IGui
 		int	_screenHeight;
 		SDL_Window* _window = nullptr;
 		SDL_Renderer* _renderer = nullptr;
+		void drawHelpMenu();
 };
