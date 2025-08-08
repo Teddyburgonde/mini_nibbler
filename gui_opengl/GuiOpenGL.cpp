@@ -100,6 +100,24 @@ void GuiOpenGL::render(const GameState& state)
 		glVertex2f(fx, fy + 20.0f);
 	glEnd();
 
+	// Dessine le score en blocs blancs
+	int score = state.getScore();
+	int nbBlocks = score / 10;
+
+	glColor3f(1.0f, 1.0f, 1.0f); // blanc
+
+	for (int i = 0; i < nbBlocks; ++i)
+	{
+		float x = 10.0f + i * 25.0f;
+		float y = 10.0f;
+		glBegin(GL_QUADS);
+			glVertex2f(x, y);
+			glVertex2f(x + 20.0f, y);
+			glVertex2f(x + 20.0f, y + 20.0f);
+			glVertex2f(x, y + 20.0f);
+		glEnd();
+	}
+
 	// Affiche la frame à l'écran
 	glfwSwapBuffers(_window);
 
