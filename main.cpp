@@ -33,11 +33,25 @@ IGui* loadGui(const std::string& path, int width, int height)
 
 int main(int argc, char **argv)
 {
-	if (argc != 3)
+	if (argc < 3 || argc > 4)
 	{
-		std::cout << "Usage: ./nibbler [width] [height]\n";
+		std::cout << "Usage: ./nibbler [width] [height] [-o]\n";
 		return 1;
 	}
+	bool obstaclesEnabled = false;
+	if (argc == 4)
+	{
+		std::string opt = argv[3];
+		if (opt == "-o")
+			obstaclesEnabled = true;
+		else
+		{
+			std::cout << "Unknown option: " << opt << "\n";
+			std::cout << "Usage: ./nibbler [width] [height] [-o]\n";
+			return 1;
+		}
+	}
+
 	int width = std::atoi(argv[1]);
 	int height = std::atoi(argv[2]);
 
@@ -49,7 +63,7 @@ int main(int argc, char **argv)
 	setlocale(LC_ALL, "");
 	IGui* gui = loadGui("./libgui_ncurses.so", width, height);
 
-	GameState game(width, height);
+	GameState game(width, height, obstaclesEnabled);
 	bool quitByPlayer = false;
 
 	while (!game.isFinished())

@@ -5,6 +5,7 @@
 #include "../includes/Point.hpp"
 #include <cstdlib>
 #include <ctime>
+#include <vector>
 
 /**
  * @class GameState
@@ -18,7 +19,7 @@
 class GameState
 {
 	public:
-		GameState(int width, int height);
+		GameState(int width, int height, bool obstacles);
 		GameState(const GameState& copy);
 		GameState& operator=(const GameState& copy);
 		~GameState();
@@ -33,12 +34,17 @@ class GameState
 		void	generateFood();
 		void	reset();
 		void	increaseScore(int amount);
+		void	generateObstacles();
+		const std::vector<Point>& getObstacles() const;
 
 	private:
 		Snake	snake;
 		Point	food;
+		std::vector<Point> _obstacles;
 		int		_score;
 		bool	finished;
 		int		_width;
 		int		_height;
+		bool 	_obstaclesEnabled;
+
 };

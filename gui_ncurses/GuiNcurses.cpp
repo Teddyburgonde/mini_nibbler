@@ -55,9 +55,13 @@ void GuiNcurses::init(int width, int height)
 	init_pair(2, COLOR_RED, COLOR_BLACK);
 }
 
-
-
-
+void GuiNcurses::drawObstacles(const std::vector<Point>& obstacles)
+{
+	for (const Point& p : obstacles)
+	{
+		mvaddch(p.y, p.x, 'Z'); // caractère obstacle
+	}
+}
 
 
 /**
@@ -75,6 +79,7 @@ void	GuiNcurses::render(const GameState& state)
 	drawWalls(_screenWidth, _screenHeight);
 	drawSnake(state.getSnake().getBody());
 	drawFood(state.getFood());
+	drawObstacles(state.getObstacles());
 	refresh();
 }
 

@@ -4,16 +4,20 @@
  * @brief Constructeur par défaut du GameState.
  * Initialise le snake, la nourriture, le score et l'état du jeu.
  */
-GameState::GameState(int width, int height)
+GameState::GameState(int width, int height, bool obstacles)
 	: snake(width / 2, height / 2),
 	  food(),
 	  _score(0),
 	  finished(false),
 	  _width(width),
-	  _height(height)
+	  _height(height),
+	  _obstaclesEnabled(obstacles)
 {
 	std::srand(std::time(nullptr));
 	generateFood();
+
+	if (_obstaclesEnabled)
+		generateObstacles();
 }
 
 /**
@@ -49,6 +53,49 @@ GameState& GameState::operator=(const GameState& copy)
  * @brief Destructeur de GameState.
  */
 GameState::~GameState() {}
+
+
+/**
+ * @brief Génère des obstacles aléatoires sur la carte de jeu.
+ *
+ * Cette fonction crée un certain nombre d'obstacles (1% de la surface totale)
+ * en s'assurant qu'ils ne chevauchent ni le serpent, ni la nourriture, ni un autre obstacle déjà placé.
+ * Elle évite l'utilisation de do-while et ne dépend pas d'une surcharge d'opérateur.
+ */
+void GameState::generateObstacles()
+{
+	int count = (_width * _height) / 100;
+
+	while (_obstacles.size() < static_cast<size_t>(count))
+	{
+		Point p;
+		p.x = std::rand() % (_width - 2) + 1;
+		p.y = std::rand() % (_height - 2) + 1;
+
+		bool invalid = false;
+
+		// Vérifie si c’est la position de la nourriture
+		if (p.x == food.x && p.y == food.y)
+			invalid = true;
+
+		// Vérifie si c’est dans le corps du serpent
+		if (snake.checkCollision(p, false))
+			invalid = true;
+
+		// Vérifie si déjà dans les obstacles
+		for (const Point& obs : _obstacles)
+		{
+			if (p.x == obs.x && p.y == obs.y)
+			{
+				invalid = true;
+				break;
+			}
+		}
+
+		if (!invalid)
+			_obstacles.push_back(p);
+	}
+}
 
 
 /**
@@ -116,6 +163,18 @@ void GameState::update()
 		increaseScore(10);
 		generateFood();
 	}
+
+	if (_obstaclesEnabled)
+	{
+		for (const Point& obs : _obstacles)
+		{
+			if (head.x == obs.x && head.y == obs.y)
+			{
+				finished = true;
+				return;
+			}
+		}
+	}
 	if (_score >= 50)
 		finished = true;
 }
@@ -173,4 +232,9 @@ void GameState::reset()
 void GameState::increaseScore(int amount)
 {
 	_score += amount;
+}
+
+const std::vector<Point>& GameState::getObstacles() const
+{
+	return _obstacles;
 }

@@ -21,6 +21,7 @@ class GuiNcurses : public IGui
 		void	showGameOver() override;
 		void	cleanup() override;
 		~GuiNcurses() override = default;
+		void drawObstacles(const std::vector<Point>& obstacles);
 	private:
 		int	_screenWidth;
 		int	_screenHeight;
