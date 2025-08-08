@@ -70,6 +70,11 @@ int main(int argc, char **argv)
 	{
 		Input input = gui->getInput();
 
+		if (input == Input::HELP)
+		{
+			game.toggleHelpMenu();
+		}
+
 		// 🎛️ GUI switching
 		if (input == Input::SWITCH_TO_1)
 		{
@@ -99,8 +104,11 @@ int main(int argc, char **argv)
 			quitByPlayer = true;
 			break;
 		}
-		game.setDirection(input);
-		game.update();
+		if (!game.isHelpMenuActive())
+		{
+			game.setDirection(input);
+			game.update();
+		}
 		gui->render(game);
 		usleep(100000);
 	}

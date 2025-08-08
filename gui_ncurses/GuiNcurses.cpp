@@ -65,15 +65,32 @@ void GuiNcurses::drawObstacles(const std::vector<Point>& obstacles)
 
 
 /**
- * @brief Dessine tous les éléments du jeu à l'écran.
+ * @brief Affiche l'état du jeu ou le menu d'aide à l'écran avec Ncurses.
  * 
- * Appelle les fonctions utilitaires pour dessiner les murs,
- * le serpent et la nourriture, puis rafraîchit l'affichage.
- *
- * @param state État actuel du jeu.
+ * Si le menu d'aide est actif, affiche une liste des touches disponibles
+ * pour contrôler le jeu, et met automatiquement la partie en pause.
+ * Sinon, dessine l'état de la partie : le score, les murs, le serpent,
+ * la nourriture et les obstacles.
+ * 
+ * @param state État actuel du jeu (serpent, score, menu actif, etc.).
  */
 void	GuiNcurses::render(const GameState& state)
 {
+	if (state.isHelpMenuActive())
+	{
+		clear();
+
+		mvprintw(2, 5, "CONTROLES");
+		mvprintw(4, 7, "[FLECHE DU HAUT] : Monter");
+		mvprintw(5, 7, "[FLECHE DU BAS] : Descendre");
+		mvprintw(6, 7, "[FLECHE DE GAUCHE]  : Gauche");
+		mvprintw(7, 7, "[FLECHE DE DROITE] : Droite");
+		mvprintw(8, 7, "h    : Afficher / Cacher ce menu");
+		mvprintw(9, 7, "esc / q : Quitter");
+		mvprintw(11, 5, "Appuyez sur 'h' pour reprendre la partie...");
+		refresh();
+		return;
+	}
 	clear();
 	mvprintw(1, 2, "Score: %d", state.getScore());
 	drawWalls(_screenWidth, _screenHeight);
@@ -124,6 +141,8 @@ Input GuiNcurses::getInput()
 		return Input::SWITCH_TO_3;
 	if (key == 'q')
 		return Input::EXIT;
+	if (key == 'h' || key == 'H')
+		return Input::HELP;
 	return Input::NONE;
 }
 

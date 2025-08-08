@@ -11,7 +11,8 @@ GameState::GameState(int width, int height, bool obstacles)
 	  finished(false),
 	  _width(width),
 	  _height(height),
-	  _obstaclesEnabled(obstacles)
+	  _obstaclesEnabled(obstacles),
+	  _helpMenuActive(false)
 {
 	std::srand(std::time(nullptr));
 	generateFood();
@@ -237,4 +238,14 @@ void GameState::increaseScore(int amount)
 const std::vector<Point>& GameState::getObstacles() const
 {
 	return _obstacles;
+}
+
+void GameState::toggleHelpMenu()
+{
+	_helpMenuActive = !_helpMenuActive;
+}
+
+bool GameState::isHelpMenuActive() const
+{
+	return _helpMenuActive;
 }

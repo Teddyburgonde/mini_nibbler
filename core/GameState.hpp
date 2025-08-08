@@ -35,7 +35,9 @@ class GameState
 		void	reset();
 		void	increaseScore(int amount);
 		void	generateObstacles();
-		const std::vector<Point>& getObstacles() const;
+		const	std::vector<Point>& getObstacles() const;
+		void	toggleHelpMenu();
+		bool	isHelpMenuActive() const;
 
 	private:
 		Snake	snake;
@@ -46,5 +48,6 @@ class GameState
 		int		_width;
 		int		_height;
 		bool 	_obstaclesEnabled;
+		bool	_helpMenuActive;
 
 };
