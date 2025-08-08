@@ -13,7 +13,7 @@
  */
 void GuiOpenGL::init(int width, int height)
 {
-	_screenWidht = width;
+	_screenWidth = width;
 	_screenHeight = height;
 
 	if (!glfwInit())
@@ -25,7 +25,7 @@ void GuiOpenGL::init(int width, int height)
 	// Paramètres OpenGL (version 3.3)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
 
 	_window = glfwCreateWindow(width * 20, height * 20, "Nibbler - OpenGL", NULL, NULL);
 	if (!_window)
@@ -38,11 +38,19 @@ void GuiOpenGL::init(int width, int height)
 	// Rendre le contexte courant
 	glfwMakeContextCurrent(_window);
 
+	glfwSwapInterval(1); 
+
 	// Définir la zone de rendu (viewport)
 	glViewport(0, 0, width * 20, height * 20);
 
 	// Couleur de fond par défaut (noir)
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glOrtho(0, width * 20, height * 20, 0, -1, 1); // coord écran 2D classique (origine en haut à gauche)
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 }
 
 /**
@@ -64,7 +72,7 @@ void GuiOpenGL::render(const GameState& state)
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	// Dessine le serpent (vert)
-	glColor3f(0.0f, 1.0f, 0.0f); // Vert
+	glColor3f(0.0f, 0.8f, 1.0f); // Bleu cyan
 	for (const Point& p : state.getSnake().getBody())
 	{
 		float x = p.x * 20.0f;
@@ -84,7 +92,7 @@ void GuiOpenGL::render(const GameState& state)
 	float fx = food.x * 20.0f;
 	float fy = food.y * 20.0f;
 
-	glColor3f(1.0f, 0.0f, 0.0f); // Rouge
+	glColor3f(1.0f, 0.6f, 0.0f); // Orange clair
 	glBegin(GL_QUADS);
 		glVertex2f(fx, fy);
 		glVertex2f(fx + 20.0f, fy);
@@ -94,6 +102,7 @@ void GuiOpenGL::render(const GameState& state)
 
 	// Affiche la frame à l'écran
 	glfwSwapBuffers(_window);
+
 }
 
 

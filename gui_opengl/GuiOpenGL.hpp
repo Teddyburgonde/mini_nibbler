@@ -31,6 +31,6 @@ class GuiOpenGL : public IGui
 
 	private:
 		GLFWwindow* _window = nullptr;
-		int	_screenWidht;
+		int	_screenWidth;
 		int	_screenHeight;
 };

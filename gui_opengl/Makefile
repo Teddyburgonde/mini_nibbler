@@ -12,7 +12,7 @@ CXXFLAGS = -Wall -Wextra -Werror -std=c++17 -fPIC \
 		   -I/usr/include/GLFW
 
 
-LDFLAGS = -lGL -lGLU -lglfw -shared
+LDFLAGS = -L/usr/lib/x86_64-linux-gnu -lGL -lGLU -lglfw -shared
 
 #================== SOURCES =================#
 SRCS =  GuiOpenGL.cpp \
