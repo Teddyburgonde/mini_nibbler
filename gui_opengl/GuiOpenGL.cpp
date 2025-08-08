@@ -54,24 +54,58 @@ void GuiOpenGL::init(int width, int height)
 }
 
 /**
- * @brief Affiche l'état actuel du jeu à l'écran avec OpenGL.
- * 
- * Cette fonction efface l'écran, puis dessine :
- * - le serpent (en bleu cyan, case par case)
- * - la nourriture (en orange clair)
- * - les obstacles (en gris foncé, blocs fixes)
- * - le score (via des blocs blancs, 1 bloc = 10 points)
- * 
- * Chaque case du jeu est représentée par un carré de 20x20 pixels.
- * Le tout est affiché à l'écran via glfwSwapBuffers().
- * 
- * @param state Référence vers l'état actuel du jeu (serpent, nourriture, obstacles, score, etc.).
+ * @brief Affiche un menu d'aide simplifié avec des blocs directionnels en OpenGL.
+ * Les touches sont représentées par des rectangles : ↑ ↓ ← →, H (aide), Q (quitter).
  */
+void GuiOpenGL::drawHelpMenu()
+{
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	// ↑
+	glBegin(GL_QUADS);
+	glVertex2f(180, 60);
+	glVertex2f(220, 60);
+	glVertex2f(220, 100);
+	glVertex2f(180, 100);
+	glEnd();
+
+	// ←
+	glBegin(GL_QUADS);
+	glVertex2f(120, 120);
+	glVertex2f(160, 120);
+	glVertex2f(160, 160);
+	glVertex2f(120, 160);
+	glEnd();
+
+	// →
+	glBegin(GL_QUADS);
+	glVertex2f(240, 120);
+	glVertex2f(280, 120);
+	glVertex2f(280, 160);
+	glVertex2f(240, 160);
+	glEnd();
+
+	// ↓
+	glBegin(GL_QUADS);
+	glVertex2f(180, 180);
+	glVertex2f(220, 180);
+	glVertex2f(220, 220);
+	glVertex2f(180, 220);
+	glEnd();
+
+	glfwSwapBuffers(_window);
+}
+
 void GuiOpenGL::render(const GameState& state)
 {
 	// Efface l'écran avec la couleur de fond (noir)
 	glClear(GL_COLOR_BUFFER_BIT);
 
+	if (state.isHelpMenuActive())
+	{
+		drawHelpMenu();
+		return;
+	}
 	// Dessine le serpent (vert)
 	glColor3f(0.0f, 0.8f, 1.0f); // Bleu cyan
 	for (const Point& p : state.getSnake().getBody())
@@ -151,32 +185,33 @@ void GuiOpenGL::render(const GameState& state)
  */
 Input GuiOpenGL::getInput()
 {
-    glfwPollEvents();
+	glfwPollEvents();
 
-    if (glfwWindowShouldClose(_window))
-        return Input::EXIT;
+	if (glfwWindowShouldClose(_window))
+		return Input::EXIT;
 
-    if (glfwGetKey(_window, GLFW_KEY_UP) == GLFW_PRESS)
-        return Input::UP;
-    if (glfwGetKey(_window, GLFW_KEY_DOWN) == GLFW_PRESS)
-        return Input::DOWN;
-    if (glfwGetKey(_window, GLFW_KEY_LEFT) == GLFW_PRESS)
-        return Input::LEFT;
-    if (glfwGetKey(_window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-        return Input::RIGHT;
+	if (glfwGetKey(_window, GLFW_KEY_UP) == GLFW_PRESS)
+		return Input::UP;
+	if (glfwGetKey(_window, GLFW_KEY_DOWN) == GLFW_PRESS)
+		return Input::DOWN;
+	if (glfwGetKey(_window, GLFW_KEY_LEFT) == GLFW_PRESS)
+		return Input::LEFT;
+	if (glfwGetKey(_window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+		return Input::RIGHT;
 
-    if (glfwGetKey(_window, GLFW_KEY_1) == GLFW_PRESS)
-        return Input::SWITCH_TO_1;
-    if (glfwGetKey(_window, GLFW_KEY_2) == GLFW_PRESS)
-        return Input::SWITCH_TO_2;
-    if (glfwGetKey(_window, GLFW_KEY_3) == GLFW_PRESS)
-        return Input::SWITCH_TO_3;
+	if (glfwGetKey(_window, GLFW_KEY_1) == GLFW_PRESS)
+		return Input::SWITCH_TO_1;
+	if (glfwGetKey(_window, GLFW_KEY_2) == GLFW_PRESS)
+		return Input::SWITCH_TO_2;
+	if (glfwGetKey(_window, GLFW_KEY_3) == GLFW_PRESS)
+		return Input::SWITCH_TO_3;
+	if (glfwGetKey(_window, GLFW_KEY_ESCAPE) == GLFW_PRESS ||
+		glfwGetKey(_window, GLFW_KEY_Q) == GLFW_PRESS)
+		return Input::EXIT;
 
-    if (glfwGetKey(_window, GLFW_KEY_ESCAPE) == GLFW_PRESS ||
-        glfwGetKey(_window, GLFW_KEY_Q) == GLFW_PRESS)
-        return Input::EXIT;
-
-    return Input::NONE;
+	if (glfwGetKey(_window, GLFW_KEY_H) == GLFW_PRESS)
+		return Input::HELP;
+	return Input::NONE;
 }
 
 /**

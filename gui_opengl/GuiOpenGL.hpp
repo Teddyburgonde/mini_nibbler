@@ -33,4 +33,5 @@ class GuiOpenGL : public IGui
 		GLFWwindow* _window = nullptr;
 		int	_screenWidth;
 		int	_screenHeight;
+		void	drawHelpMenu();
 };
