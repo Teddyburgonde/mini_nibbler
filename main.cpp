@@ -9,6 +9,15 @@
 #include <ncurses.h>
 #include <SDL2/SDL.h>
 
+/**
+ * @brief Charge dynamiquement un module GUI depuis une bibliothèque partagée.
+ * 
+ * @param path Chemin vers la bibliothèque partagée (.so).
+ * @param width Largeur initiale du plateau de jeu.
+ * @param height Hauteur initiale du plateau de jeu.
+ * @return Pointeur vers l’instance IGui créée.
+ * @note Quitte le programme en cas d’échec du chargement.
+ */
 IGui* loadGui(const std::string& path, int width, int height)
 {
 	void* handle = dlopen(path.c_str(), RTLD_LAZY);
@@ -31,7 +40,13 @@ IGui* loadGui(const std::string& path, int width, int height)
 	return gui;
 }
 
-
+/**
+ * @brief Affiche l’écran de fin approprié selon le résultat de la partie.
+ * 
+ * @param game Référence vers l’état actuel du jeu.
+ * @param gui Référence vers le pointeur de l’interface graphique.
+ * @param quitByPlayer Indique si le joueur a quitté volontairement.
+ */
 void	showEndScreen(GameState &game, IGui* &gui, bool quitByPlayer)
 {
 	if (!quitByPlayer)
@@ -43,36 +58,128 @@ void	showEndScreen(GameState &game, IGui* &gui, bool quitByPlayer)
 	}
 }
 
+/**
+ * @brief Affiche l’aide/usage du programme.
+ * 
+ * @param prog Nom du programme (argv[0]).
+ */
+static void	printUsage(const char* prog) 
+{
+    std::cout << "Usage: " << prog << " <width> <height> [-o] [-chaos]\n"
+              << "  -o       : enable obstacles\n"
+              << "  -chaos   : invert directions (chaos mode)\n"
+              << "  -h,--help: show this help\n";
+}
+
+/**
+ * @brief Analyse et valide les arguments passés en ligne de commande.
+ * 
+ * @param argc Nombre d’arguments.
+ * @param argv Tableau des arguments.
+ * @param width Référence où stocker la largeur du plateau.
+ * @param height Référence où stocker la hauteur du plateau.
+ * @param obstaclesEnabled Référence pour indiquer si les obstacles sont activés.
+ * @param chaosEnabled Référence pour indiquer si le mode chaos est activé.
+ * @return true si l’analyse est réussie, false sinon.
+ */
+bool parseArguments(int argc, char** argv, int &width, int &height, bool &obstaclesEnabled, bool &chaosEnabled)
+{
+
+	if (argc < 3 || argc > 5) 
+	{
+		printUsage(argv[0]); 
+		return false;
+	}
+
+	int		w = 0;
+	int 	h = 0;
+    bool	obstacles = false;
+    bool    chaos = false;
+
+    try 
+	{
+        w = std::stoi(argv[1]);
+        h = std::stoi(argv[2]);
+    } 
+	catch (const std::exception&) 
+	{
+        std::cout << "Error: width/height must be integers.\n";
+        printUsage(argv[0]);
+        return false;
+    }
+    if (w < 1 || h < 1) 
+	{
+        std::cout << "Error: size must be positive integers.\n";
+        return false;
+    }
+
+    // options
+    for (int i = 3; i < argc; ++i) 
+	{
+        std::string opt = argv[i];
+        if (opt == "-o")            
+			obstacles = true;
+        else if (opt == "-chaos")   
+			chaos = true;
+        else if (opt == "-h" || opt == "--help") 
+		{ 
+			printUsage(argv[0]); 
+			return false; 
+		}
+        else 
+		{
+            std::cout << "Unknown option: " << opt << "\n";
+            printUsage(argv[0]);
+            return false;
+        }
+    }
+
+    // Succès: on affecte les sorties
+    width = w; 
+	height = h;
+    obstaclesEnabled = obstacles;
+    chaosEnabled = chaos;
+    return true;
+}
+
+/**
+ * @brief Applique la transformation du mode chaos sur la direction du joueur.
+ * 
+ * @param input Direction actuelle du joueur.
+ * @return Nouvelle direction après transformation (ou la même si non applicable).
+ */
+Input applyChaosMode(Input input)
+{
+    switch (input)
+    {
+        case Input::UP:    
+			return Input::DOWN;
+        case Input::DOWN:  
+			return Input::UP;
+        case Input::LEFT:  
+			return Input::RIGHT;
+        case Input::RIGHT: 
+			return Input::LEFT;
+        default:           
+			return input;
+    }
+}
+
+/**
+ * @brief Point d’entrée du jeu Nibbler.
+ * 
+ * @param argc Nombre d’arguments.
+ * @param argv Tableau des arguments.
+ * @return Code de sortie.
+ */
 int main(int argc, char **argv)
 {
-	if (argc < 3 || argc > 5) {
-		std::cout << "Usage: ./nibbler [width] [height] [-o] [-chaos]\n";
-		return 1;
-	}
+	int width = 0;
+	int	height = 0;
 	bool obstaclesEnabled = false;
 	bool chaosEnabled = false;
-	for (int i = 3; i < argc; ++i) 
-	{
-    	std::string opt = argv[i];
-    	if (opt == "-o") 
-			obstaclesEnabled = true;
-    	else if (opt == "-chaos") 
-			chaosEnabled = true;
-    	else 
-		{
-        	std::cout << "Unknown option: " << opt << "\n";
-        	std::cout << "Usage: ./nibbler [width] [height] [-o] [--chaos]\n";
-        	return 1;
-    	}
-	}
-	int width = std::atoi(argv[1]);
-	int height = std::atoi(argv[2]);
-
-	if (width < 1 || height < 1) 
-	{
-		std::cout << "Error: size must be positive integers\n";
-		return 1;
-	}
+	if (!parseArguments(argc, argv, width, height, obstaclesEnabled, chaosEnabled))
+        return 1;
 	setlocale(LC_ALL, "");
 	IGui* gui = loadGui("./libgui_ncurses.so", width, height);
 
@@ -85,27 +192,9 @@ int main(int argc, char **argv)
 
 		if (input == Input::HELP)
 			game.toggleHelpMenu();
-		if (chaosEnabled) 
-		{
-    		switch (input) 
-			{
-        		case Input::UP:    
-					input = Input::DOWN;  
-					break;
-        		case Input::DOWN:  
-					input = Input::UP;    
-					break;
-        		case Input::LEFT:  
-					input = Input::RIGHT; 
-					break;
-        		case Input::RIGHT: 
-					input = Input::LEFT;  
-					break;
-        		default: break;
-    		}
-		}
-
-		// 🎛️ GUI switching
+		if (chaosEnabled)
+    		input = applyChaosMode(input);
+		// GUI switching
 		if (input == Input::SWITCH_TO_1)
 		{
 			gui->cleanup(); delete gui;
@@ -117,7 +206,7 @@ int main(int argc, char **argv)
 		{
 			gui->cleanup(); delete gui;
 			SDL_Quit();  // au cas où SDL n'a pas bien quitté
-			system("stty sane");  // restaure le terminal (important !)
+			system("stty sane");  // restaure le terminal
 			system("clear");
 			gui = loadGui("./libgui_ncurses.so", width, height);
 			continue;
