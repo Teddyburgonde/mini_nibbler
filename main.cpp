@@ -33,25 +33,26 @@ IGui* loadGui(const std::string& path, int width, int height)
 
 int main(int argc, char **argv)
 {
-	if (argc < 3 || argc > 4)
-	{
-		std::cout << "Usage: ./nibbler [width] [height] [-o]\n";
+	if (argc < 3 || argc > 5) {
+		std::cout << "Usage: ./nibbler [width] [height] [-o] [-chaos]\n";
 		return 1;
 	}
 	bool obstaclesEnabled = false;
-	if (argc == 4)
+	bool chaosEnabled = false;
+	for (int i = 3; i < argc; ++i) 
 	{
-		std::string opt = argv[3];
-		if (opt == "-o")
+    	std::string opt = argv[i];
+    	if (opt == "-o") 
 			obstaclesEnabled = true;
-		else
+    	else if (opt == "-chaos") 
+			chaosEnabled = true;
+    	else 
 		{
-			std::cout << "Unknown option: " << opt << "\n";
-			std::cout << "Usage: ./nibbler [width] [height] [-o]\n";
-			return 1;
-		}
+        	std::cout << "Unknown option: " << opt << "\n";
+        	std::cout << "Usage: ./nibbler [width] [height] [-o] [--chaos]\n";
+        	return 1;
+    	}
 	}
-
 	int width = std::atoi(argv[1]);
 	int height = std::atoi(argv[2]);
 
@@ -71,8 +72,25 @@ int main(int argc, char **argv)
 		Input input = gui->getInput();
 
 		if (input == Input::HELP)
-		{
 			game.toggleHelpMenu();
+		if (chaosEnabled) 
+		{
+    		switch (input) 
+			{
+        		case Input::UP:    
+					input = Input::DOWN;  
+					break;
+        		case Input::DOWN:  
+					input = Input::UP;    
+					break;
+        		case Input::LEFT:  
+					input = Input::RIGHT; 
+					break;
+        		case Input::RIGHT: 
+					input = Input::LEFT;  
+					break;
+        		default: break;
+    		}
 		}
 
 		// 🎛️ GUI switching
