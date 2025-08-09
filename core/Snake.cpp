@@ -1,7 +1,13 @@
 #include "Snake.hpp"
 
 /**
- * @brief Constructeur du Snake : initialise le corps avec une seule case au point de départ
+ * @brief Constructeur du Snake : initialise le serpent avec 4 segments alignés horizontalement vers la gauche.
+ *
+ * La tête est placée aux coordonnées de départ, et 3 segments supplémentaires
+ * sont ajoutés derrière elle, dans la direction opposée au mouvement initial.
+ *
+ * @param startX Position X de départ de la tête.
+ * @param startY Position Y de départ de la tête.
  */
 Snake::Snake(int startX, int startY) : direction(Direction::RIGHT)
 {

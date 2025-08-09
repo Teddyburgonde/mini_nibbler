@@ -31,6 +31,18 @@ IGui* loadGui(const std::string& path, int width, int height)
 	return gui;
 }
 
+
+void	showEndScreen(GameState &game, IGui* &gui, bool quitByPlayer)
+{
+	if (!quitByPlayer)
+	{
+		if (game.getScore() >= 50)
+			gui->showVictory();
+		else
+			gui->showGameOver();
+	}
+}
+
 int main(int argc, char **argv)
 {
 	if (argc < 3 || argc > 5) {
@@ -130,13 +142,7 @@ int main(int argc, char **argv)
 		gui->render(game);
 		usleep(100000);
 	}
-	if (!quitByPlayer)
-	{
-		if (game.getScore() >= 50)
-			gui->showVictory();
-		else
-			gui->showGameOver();
-	}
+	showEndScreen(game, gui, quitByPlayer);
 	gui->cleanup();
 	delete gui;
 	return 0;
