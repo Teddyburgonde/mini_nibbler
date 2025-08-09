@@ -92,9 +92,25 @@ const std::deque<Point>& Snake::getBody() const
 }
 
 /**
- * @brief Modifie la direction du serpent
+ * @brief Change la direction du serpent, sauf si la nouvelle direction est l'opposée de l'actuelle.
+ *
+ * Cette fonction empêche le serpent de faire demi-tour instantanément,
+ * ce qui provoquerait une collision avec lui-même.
+ *
+ * @param newDir La nouvelle direction demandée.
  */
 void Snake::setDirection(Direction newDir)
 {
+	if ((direction == Direction::UP &&
+		newDir == Direction::DOWN) ||
+        (direction == Direction::DOWN  
+		&& newDir == Direction::UP) ||
+        (direction == Direction::LEFT  
+		&& newDir == Direction::RIGHT) ||
+        (direction == Direction::RIGHT && 
+		newDir == Direction::LEFT))
+    {
+        return;
+    }
 	direction = newDir;
 }
