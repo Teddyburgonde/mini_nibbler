@@ -6,6 +6,9 @@
 Snake::Snake(int startX, int startY) : direction(Direction::RIGHT)
 {
 	body.push_front({startX, startY});
+	body.push_back({startX - 1, startY});
+	body.push_back({startX - 2, startY}); 
+	body.push_back({startX - 3, startY});
 }
 
 /**
