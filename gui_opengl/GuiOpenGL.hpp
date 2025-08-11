@@ -1,3 +1,11 @@
+/**
+ * @file GuiOpenGL.hpp
+ * @brief Déclaration de la classe GuiOpenGL.
+ *
+ * Cette classe implémente l'interface graphique du jeu Snake en utilisant OpenGL.
+ * Elle gère l'affichage du jeu, les entrées utilisateur, et les messages de fin de jeu.
+ */
+
 #pragma once
 #include "../includes/IGui.hpp"
 #include <GL/gl.h>
@@ -30,8 +38,8 @@ class GuiOpenGL : public IGui
 		~GuiOpenGL() override = default;
 
 	private:
-		GLFWwindow* _window = nullptr;
-		int	_screenWidth;
-		int	_screenHeight;
+		GLFWwindow* _window = nullptr;	///< Pointeur vers la fenêtre GLFW.
+		int	_screenWidth;				///< Largeur de l'écran en pixels.
+		int	_screenHeight;				///< Hauteur de l'écran en pixels.
 		void	drawHelpMenu();
 };

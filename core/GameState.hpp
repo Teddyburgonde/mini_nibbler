@@ -1,3 +1,12 @@
+/**
+ * @file GameState.hpp
+ * @brief Déclaration de la classe GameState pour le jeu Snake.
+ *
+ * Cette classe gère l'état du jeu, y compris le serpent, la nourriture,
+ * le score et les obstacles. Elle permet de mettre à jour le jeu et de
+ * gérer les interactions du joueur.
+ */
+
 #pragma once
 
 #include "Snake.hpp"
@@ -40,14 +49,14 @@ class GameState
 		bool	isHelpMenuActive() const;
 
 	private:
-		Snake	snake;
-		Point	food;
-		std::vector<Point> _obstacles;
-		int		_score;
-		bool	finished;
-		int		_width;
-		int		_height;
-		bool 	_obstaclesEnabled;
-		bool	_helpMenuActive;
+		Snake	snake;					///< Le serpent du jeu.
+		Point	food;					///< La position de la nourriture.
+		std::vector<Point> _obstacles;	///< Liste des obstacles du jeu.
+		int		_score;					///< Le score actuel du joueur.
+		bool	finished;				///< Indique si le jeu est terminé.
+		int		_width;					///< Largeur du plateau de jeu.
+		int		_height;				///< Hauteur du plateau de jeu.
+		bool 	_obstaclesEnabled;		///< Indique si les obstacles sont activés.
+		bool	_helpMenuActive;		///< Indique si le menu d'aide est actif.
 
 };

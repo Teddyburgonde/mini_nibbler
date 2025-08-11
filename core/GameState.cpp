@@ -1,8 +1,20 @@
+/**
+ * @file GameState.cpp
+ * @brief Implémentation de la classe GameState.
+ *
+ * Cette classe gère l'état du jeu Snake, y compris le serpent, la nourriture, les obstacles et le score.
+ */
+
 #include "GameState.hpp"
 
 /**
  * @brief Constructeur par défaut du GameState.
+ *
  * Initialise le snake, la nourriture, le score et l'état du jeu.
+ *
+ * @param width Largeur du plateau de jeu.
+ * @param height Hauteur du plateau de jeu.
+ * @param obstacles Indique si les obstacles sont activés.
  */
 GameState::GameState(int width, int height, bool obstacles)
 	: snake(width / 2, height / 2),
@@ -23,6 +35,7 @@ GameState::GameState(int width, int height, bool obstacles)
 
 /**
  * @brief Constructeur de copie.
+ *
  * @param copy L'autre GameState à copier.
  */
 GameState::GameState(const GameState& copy)
@@ -33,6 +46,7 @@ GameState::GameState(const GameState& copy)
 
 /**
  * @brief Opérateur d'affectation.
+ *
  * @param copy L'autre GameState à copier.
  * @return Référence vers l'instance actuelle.
  */
@@ -101,6 +115,7 @@ void GameState::generateObstacles()
 
 /**
  * @brief Accès au snake actuel.
+ *
  * @return Référence constante vers le snake.
  */
 const Snake& GameState::getSnake() const
@@ -110,6 +125,7 @@ const Snake& GameState::getSnake() const
 
 /**
  * @brief Accès à la position de la nourriture.
+ *
  * @return Référence constante vers l'objet Point représentant la nourriture.
  */
 const Point& GameState::getFood() const
@@ -119,6 +135,7 @@ const Point& GameState::getFood() const
 
 /**
  * @brief Accès au score actuel.
+ *
  * @return Le score en cours.
  */
 int GameState::getScore() const
@@ -128,6 +145,7 @@ int GameState::getScore() const
 
 /**
  * @brief Indique si la partie est terminée.
+ *
  * @return true si terminée, false sinon.
  */
 bool GameState::isFinished() const
@@ -176,12 +194,13 @@ void GameState::update()
 			}
 		}
 	}
-	if (_score >= 50)
+	if (_score >= 200)
 		finished = true;
 }
 
 /**
  * @brief Modifie la direction du snake en fonction de l'input utilisateur.
+ *
  * @param input Direction souhaitée (enum Input).
  */
 void GameState::setDirection(Input input)
@@ -228,6 +247,7 @@ void GameState::reset()
 
 /**
  * @brief Augmente le score d'un certain montant.
+ *
  * @param amount Le montant à ajouter au score actuel.
  */
 void GameState::increaseScore(int amount)
@@ -235,16 +255,29 @@ void GameState::increaseScore(int amount)
 	_score += amount;
 }
 
+/**
+ * @brief Accès aux obstacles du jeu.
+ *
+ * @return Référence constante vers le vecteur d'obstacles.
+ */
 const std::vector<Point>& GameState::getObstacles() const
 {
 	return _obstacles;
 }
 
+/**
+ * @brief Active ou désactive le menu d'aide.
+ */
 void GameState::toggleHelpMenu()
 {
 	_helpMenuActive = !_helpMenuActive;
 }
 
+/**
+ * @brief Vérifie si le menu d'aide est actif.
+ *
+ * @return true si le menu d'aide est actif, false sinon.
+ */
 bool GameState::isHelpMenuActive() const
 {
 	return _helpMenuActive;

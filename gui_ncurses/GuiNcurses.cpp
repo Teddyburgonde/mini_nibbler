@@ -1,3 +1,12 @@
+/**
+ * @file GuiNcurses.cpp
+ * @brief Implémentation de la classe GuiNcurses pour le rendu graphique en mode texte
+ *
+ * Ce fichier contient les méthodes pour initialiser l'interface Ncurses,
+ * dessiner le jeu (serpent, nourriture, score, obstacles), gérer les entrées utilisateur,
+ * et afficher les messages de fin de jeu (victoire, défaite).
+ */
+
 #include "GuiNcurses.hpp"
 
 /**
@@ -55,6 +64,14 @@ void GuiNcurses::init(int width, int height)
 	init_pair(2, COLOR_RED, COLOR_BLACK);
 }
 
+/**
+ * @brief Dessine les obstacles du jeu.
+ *
+ * Cette fonction dessine les obstacles en utilisant des caractères spéciaux.
+ *
+ * @param width Largeur du terrain de jeu.
+ * @param height Hauteur du terrain de jeu.
+ */
 void GuiNcurses::drawObstacles(const std::vector<Point>& obstacles)
 {
 	for (const Point& p : obstacles)

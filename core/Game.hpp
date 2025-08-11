@@ -1,3 +1,11 @@
+/**
+ * @file Game.hpp
+ * @brief Déclaration de la classe Game qui gère la logique du jeu Snake.
+ *
+ * Cette classe est responsable de la gestion du serpent, de la nourriture,
+ * et de la logique de jeu.
+ */
+
 #pragma once
 
 #include "Snake.hpp"
@@ -18,10 +26,10 @@ class Game
 		void	generateRandomFoodPosition();
 
 	private:
-		Snake	snake;
-		Point	food;
-		int		width;
-		int		height;
+		Snake	snake;	///< Le serpent du jeu.
+		Point	food;	///< La position de la nourriture.
+		int		width;	///< Largeur du plateau de jeu.
+		int		height; ///< Hauteur du plateau de jeu.
 };
 
 

@@ -1,3 +1,13 @@
+/**
+ * @file main.cpp
+ * @brief Point d'entrée du jeu Nibbler.
+ *
+ * Ce fichier contient la logique principale du jeu, gère les entrées utilisateur,
+ * initialise l'interface graphique et gère le cycle de vie du jeu.
+ * Il permet également de charger dynamiquement différentes interfaces graphiques
+ * (ncurses, SDL, OpenGL) en fonction des préférences de l'utilisateur.
+ */
+
 #include "core/Game.hpp"
 #include "includes/IGui.hpp"
 #include <iostream>
@@ -51,7 +61,7 @@ void	showEndScreen(GameState &game, IGui* &gui, bool quitByPlayer)
 {
 	if (!quitByPlayer)
 	{
-		if (game.getScore() >= 50)
+		if (game.getScore() >= 200)
 			gui->showVictory();
 		else
 			gui->showGameOver();
@@ -107,9 +117,9 @@ bool parseArguments(int argc, char** argv, int &width, int &height, bool &obstac
         printUsage(argv[0]);
         return false;
     }
-    if (w < 1 || h < 1) 
+    if (w < 10 || h < 10)
 	{
-        std::cout << "Error: size must be positive integers.\n";
+        std::cout << "Error: size must be more than 10.\n";
         return false;
     }
 

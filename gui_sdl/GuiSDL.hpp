@@ -1,3 +1,11 @@
+/**
+ * @file GuiSDL.hpp
+ * @brief Déclaration de la classe GuiSDL pour l'interface graphique du jeu Snake.
+ *
+ * Cette classe implémente l'interface IGui et utilise la bibliothèque SDL2 pour
+ * gérer l'affichage du jeu, les entrées utilisateur et les messages de fin de jeu.
+ */
+
 #pragma once
 #include "../includes/IGui.hpp"
 #include <SDL2/SDL.h>
@@ -27,9 +35,9 @@ class GuiSDL : public IGui
 		~GuiSDL() override = default;
 	private:
 		void checkTerminalSize(int requiredWidth, int requiredHeight);
-		int	_screenWidth;
-		int	_screenHeight;
-		SDL_Window* _window = nullptr;
-		SDL_Renderer* _renderer = nullptr;
+		int	_screenWidth;					///< Largeur de l'écran en pixels.
+		int	_screenHeight;					///< Hauteur de l'écran en pixels.
+		SDL_Window* _window = nullptr;		///< Pointeur vers la fenêtre SDL.
+		SDL_Renderer* _renderer = nullptr;	///< Pointeur vers le renderer SDL.
 		void drawHelpMenu();
 };

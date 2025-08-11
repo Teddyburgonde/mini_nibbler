@@ -1,3 +1,12 @@
+/**
+ * @file GuiOpenGL.cpp
+ * @brief Implémentation de la classe GuiOpenGL pour le rendu graphique en OpenGL
+ *
+ * Ce fichier contient les méthodes pour initialiser la fenêtre OpenGL,
+ * dessiner le menu d'aide, afficher le jeu (serpent, nourriture, score,
+ * obstacles) et gérer les entrées utilisateur.
+ */
+
 #include "GuiOpenGL.hpp"
 #include <iostream>
 
@@ -96,6 +105,14 @@ void GuiOpenGL::drawHelpMenu()
 	glfwSwapBuffers(_window);
 }
 
+/**
+ * @brief Rendu graphique du jeu en OpenGL.
+ *
+ * Cette méthode dessine le serpent, la nourriture, le score et les obstacles
+ * sur l'écran en utilisant OpenGL. Elle gère également l'affichage du menu d'aide.
+ *
+ * @param state L'état actuel du jeu (serpent, nourriture, score, obstacles).
+ */
 void GuiOpenGL::render(const GameState& state)
 {
 	// Efface l'écran avec la couleur de fond (noir)

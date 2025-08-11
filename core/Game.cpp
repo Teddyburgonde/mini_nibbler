@@ -1,8 +1,19 @@
+/**
+ * @file Game.cpp
+ * @brief Implémentation de la classe Game.
+ *
+ * Cette classe gère le plateau du jeu Snake (taille et position de la nourriture).
+ */
+
 #include "Game.hpp"
 
 /**
  * @brief Constructeur de la classe Game.
+ *
  * Initialise le snake au centre, la position de la nourriture et les dimensions du plateau.
+ *
+ * @param w Largeur du plateau de jeu.
+ * @param h Hauteur du plateau de jeu.
  */
 Game::Game(int w, int h)
 	: snake(w / 2, h / 2), width(w), height(h)

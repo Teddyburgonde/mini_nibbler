@@ -1,3 +1,12 @@
+/**
+ * @file GuiSDL.cpp
+ * @brief Implémentation de la classe GuiSDL pour l'interface graphique du jeu Snake
+ *
+ * Cette classe utilise la bibliothèque SDL2 pour gérer l'affichage du jeu,
+ * les entrées utilisateur et les messages de fin de jeu. Elle implémente
+ * l'interface IGui définie dans includes/IGui.hpp.
+ */
+
 #include "GuiSDL.hpp"
 
 /**

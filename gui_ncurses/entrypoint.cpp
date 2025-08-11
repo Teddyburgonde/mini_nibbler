@@ -1,3 +1,11 @@
+/**
+ * @file entrypoint.cpp
+ * @brief Point d'entrée pour la création dynamique de l'interface graphique Ncurses.
+ *
+ * Ce fichier contient la fonction `createGui()` qui est utilisée par `dlsym()`
+ * pour instancier l'interface graphique Ncurses.
+ */
+
 #include "GuiNcurses.hpp"
 
 /**

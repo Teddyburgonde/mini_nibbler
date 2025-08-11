@@ -1,3 +1,12 @@
+/**
+ * @file GuiNcurses.hpp
+ * @brief Classe d’interface graphique Ncurses pour le jeu Snake.
+ *
+ * Cette classe implémente l’interface IGui pour fournir une interface utilisateur en mode texte
+ * utilisant la bibliothèque Ncurses. Elle gère l’affichage du jeu, la récupération des entrées utilisateur,
+ * et les messages de fin de jeu.
+ */
+
 #pragma once
 #include "../includes/IGui.hpp"
 #include <ncurses.h>
@@ -23,6 +32,6 @@ class GuiNcurses : public IGui
 		~GuiNcurses() override = default;
 		void drawObstacles(const std::vector<Point>& obstacles);
 	private:
-		int	_screenWidth;
-		int	_screenHeight;
+		int	_screenWidth;	///< Largeur de l'écran en caractères
+		int	_screenHeight;	///< Hauteur de l'écran en caractères
 };

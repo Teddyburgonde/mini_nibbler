@@ -1,3 +1,11 @@
+/**
+ * @file Snake.cpp
+ * @brief Implémentation de la classe Snake, représentant le serpent du jeu.
+ *
+ * Ce fichier contient les définitions des méthodes de la classe Snake,
+ * qui gère le corps du serpent, ses mouvements, sa croissance et les collisions.
+ */
+
 #include "Snake.hpp"
 
 /**
@@ -77,6 +85,11 @@ void Snake::grow()
 
 /**
  * @brief Vérifie si la position donnée entre en collision avec le corps du serpent
+ *
+ * @param pos La position à vérifier.
+ * @param ignoreHead Si vrai, ignore la tête du serpent dans la vérification.
+ *
+ * @return true Si une collision est détectée, false sinon.
  */
 bool Snake::checkCollision(const Point& pos, bool ignoreHead) const
 {

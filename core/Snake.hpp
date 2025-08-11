@@ -1,3 +1,10 @@
+/**
+ * @file Snake.hpp
+ * @brief Définition de la classe Snake.
+ *
+ * Gère le serpent du jeu, ses mouvements, sa croissance et les collisions.
+ */
+
 #pragma once
 
 #include <deque>
@@ -34,6 +41,6 @@ class Snake
 
 
 	private:
-		std::deque<Point> body;
-		Direction direction;
+		std::deque<Point> body;	///< Corps du serpent, stocké comme une liste de points.
+		Direction direction;	///< Direction actuelle du serpent.
 };

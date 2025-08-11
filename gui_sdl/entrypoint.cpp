@@ -1,3 +1,11 @@
+/**
+ * @file entrypoint.cpp
+ * @brief Point d'entrée pour la GUI SDL.
+ *
+ * Ce fichier contient la fonction d'entrée pour la bibliothèque GUI SDL,
+ * permettant de créer une instance de GuiSDL.
+ */
+
 #include "GuiSDL.hpp"
 
 /**

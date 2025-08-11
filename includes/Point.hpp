@@ -1,3 +1,8 @@
+/**
+ * @file Point.hpp
+ * @brief Définition de la structure Point pour représenter un point en 2D.
+ */
+
 #pragma once
 
 /**

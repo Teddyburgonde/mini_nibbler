@@ -1,3 +1,11 @@
+/**
+ * @file entrypoint.cpp
+ * @brief Point d'entrée pour la GUI OpenGL.
+ *
+ * Ce fichier contient la fonction d'entrée pour la bibliothèque GUI OpenGL,
+ * permettant de créer une instance de GuiOpenGL.
+ */
+
 #include "GuiOpenGL.hpp"
 
 /**

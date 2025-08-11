@@ -1,3 +1,10 @@
+/**
+ * @file IGui.hpp
+ * @brief Interface pour les moteurs graphiques du projet.
+ *
+ * Cette interface définit les méthodes nécessaires pour initialiser, afficher et gérer les entrées utilisateur dans un moteur graphique.
+ */
+
 #pragma once
 
 #include "../core/GameState.hpp"
