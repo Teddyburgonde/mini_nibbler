@@ -9,6 +9,11 @@
 
 #include "GuiSDL.hpp"
 
+
+GuiSDL::GuiSDL()
+	: _screenWidth(0), _screenHeight(0), _window(nullptr), _renderer(nullptr)
+{}
+
 /**
  * @brief Vérifie que la taille de la zone de jeu est raisonnable pour l'affichage SDL.
  * 

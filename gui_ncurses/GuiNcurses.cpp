@@ -8,6 +8,27 @@
  */
 
 #include "GuiNcurses.hpp"
+#include <iostream> // pour std::cout utilisé dans checkTerminalSize
+
+// ===== Forme canonique (Coplien) =====
+
+GuiNcurses::GuiNcurses()
+	: _screenWidth(0), _screenHeight(0)
+{}
+
+GuiNcurses::GuiNcurses(const GuiNcurses& other)
+	: _screenWidth(other._screenWidth), _screenHeight(other._screenHeight)
+{}
+
+GuiNcurses& GuiNcurses::operator=(const GuiNcurses& other)
+{
+	if (this != &other)
+	{
+		_screenWidth  = other._screenWidth;
+		_screenHeight = other._screenHeight;
+	}
+	return *this;
+}
 
 /**
  * @brief Vérifie si le terminal est assez grand pour la fenêtre demandée.

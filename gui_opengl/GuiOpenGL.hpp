@@ -29,13 +29,17 @@
 class GuiOpenGL : public IGui
 {
 	public:
+		GuiOpenGL();
+		GuiOpenGL(const GuiOpenGL&) = delete; 
+		GuiOpenGL& operator=(const GuiOpenGL&) = delete;
+		~GuiOpenGL() override = default;
+
 		void	init(int width, int height) override;
 		void	render(const GameState& state) override;
 		Input	getInput() override;
 		void	showVictory() override;
 		void	showGameOver() override;
 		void	cleanup() override;
-		~GuiOpenGL() override = default;
 
 	private:
 		GLFWwindow* _window = nullptr;	///< Pointeur vers la fenêtre GLFW.

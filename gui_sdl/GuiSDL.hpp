@@ -12,7 +12,6 @@
 
 #include "../core/GameState.hpp"
 
-
 /**
  * @class GuiSDL
  * @brief Implémentation de l'interface graphique du jeu en utilisant la bibliothèque SDL2.
@@ -26,18 +25,26 @@
 class GuiSDL : public IGui
 {
 	public:
+		// ===== Forme canonique (Coplien) =====
+		GuiSDL();                          // Constructeur par défaut
+		GuiSDL(const GuiSDL&) = delete;    // Interdit la copie
+		GuiSDL& operator=(const GuiSDL&) = delete; // Interdit la copie
+		~GuiSDL() override = default;      // Destructeur
+
+		// ===== Méthodes existantes =====
 		void	init(int width, int height) override;
 		void	render(const GameState& state) override;
 		Input	getInput() override;
 		void	showVictory() override;
 		void	showGameOver() override;
 		void	cleanup() override;
-		~GuiSDL() override = default;
+
 	private:
 		void checkTerminalSize(int requiredWidth, int requiredHeight);
+		void drawHelpMenu();
+
 		int	_screenWidth;					///< Largeur de l'écran en pixels.
 		int	_screenHeight;					///< Hauteur de l'écran en pixels.
 		SDL_Window* _window = nullptr;		///< Pointeur vers la fenêtre SDL.
 		SDL_Renderer* _renderer = nullptr;	///< Pointeur vers le renderer SDL.
-		void drawHelpMenu();
 };

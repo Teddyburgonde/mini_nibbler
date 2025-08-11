@@ -21,7 +21,10 @@
 class Game
 {
 	public:
+		Game();
 		Game(int width, int height);
+		Game(const Game& other);
+		Game& operator=(const Game& other);
 		~Game();
 		void	generateRandomFoodPosition();
 

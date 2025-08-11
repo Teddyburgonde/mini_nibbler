@@ -22,6 +22,11 @@
 class GuiNcurses : public IGui
 {
 	public:
+		GuiNcurses();
+		GuiNcurses(const GuiNcurses& other);
+		GuiNcurses& operator=(const GuiNcurses& other);
+		~GuiNcurses() override = default;
+
 		void	init(int width, int height) override;
 		void	render(const GameState& state) override;
 		Input	getInput() override;
@@ -29,8 +34,8 @@ class GuiNcurses : public IGui
 		void	showVictory() override;
 		void	showGameOver() override;
 		void	cleanup() override;
-		~GuiNcurses() override = default;
-		void drawObstacles(const std::vector<Point>& obstacles);
+		void	drawObstacles(const std::vector<Point>& obstacles);
+
 	private:
 		int	_screenWidth;	///< Largeur de l'écran en caractères
 		int	_screenHeight;	///< Hauteur de l'écran en caractères

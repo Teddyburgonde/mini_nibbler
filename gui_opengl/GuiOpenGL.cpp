@@ -8,7 +8,13 @@
  */
 
 #include "GuiOpenGL.hpp"
-#include <iostream>
+
+
+// ===== Forme canonique =====
+
+GuiOpenGL::GuiOpenGL()
+	: _window(nullptr), _screenWidth(0), _screenHeight(0)
+{}
 
 /**
  * @brief Initialise la fenêtre et le contexte OpenGL avec GLFW.
@@ -241,6 +247,7 @@ void GuiOpenGL::cleanup()
 {
 	if (_window)
 		glfwDestroyWindow(_window);
+	_window = nullptr;
 	glfwTerminate();
 	system("stty sane");
 }

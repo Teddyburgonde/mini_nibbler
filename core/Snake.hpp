@@ -11,7 +11,6 @@
 #include <iostream>
 #include "../includes/Point.hpp"
 
-
 /**
  * @brief Enumération des directions possibles du serpent.
  */
@@ -31,14 +30,18 @@ enum class Direction
 class Snake 
 {
 	public:
-		Snake(int startX, int startY);
+		Snake();
+		Snake(const Snake& other);
+		Snake& operator=(const Snake& other);
 		~Snake();
+
+		Snake(int startX, int startY);
+
 		void move();
 		void grow();
 		bool checkCollision(const Point& pos, bool ignoreHead) const;
 		const std::deque<Point>& getBody() const;
 		void setDirection(Direction newDir);
-
 
 	private:
 		std::deque<Point> body;	///< Corps du serpent, stocké comme une liste de points.

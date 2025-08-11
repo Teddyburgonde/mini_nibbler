@@ -8,14 +8,50 @@
 
 #include "Snake.hpp"
 
+// ===== Forme canonique =====
+
 /**
- * @brief Constructeur du Snake : initialise le serpent avec 4 segments alignés horizontalement vers la gauche.
+ * @brief Constructeur par défaut : serpent de 4 segments à l'origine, vers la droite.
+ */
+Snake::Snake() : direction(Direction::RIGHT)
+{
+	body.push_front({0, 0});
+	body.push_back({-1, 0});
+	body.push_back({-2, 0});
+	body.push_back({-3, 0});
+}
+
+/**
+ * @brief Constructeur de copie.
+ */
+Snake::Snake(const Snake& other)
+	: body(other.body), direction(other.direction)
+{}
+
+/**
+ * @brief Opérateur d'affectation.
+ */
+Snake& Snake::operator=(const Snake& other)
+{
+	if (this != &other)
+	{
+		body = other.body;
+		direction = other.direction;
+	}
+	return *this;
+}
+
+/**
+ * @brief Destructeur par défaut.
+ */
+Snake::~Snake() {}
+
+
+/**
+ * @brief Constructeur : initialise le serpent avec 4 segments alignés horizontalement vers la gauche.
  *
  * La tête est placée aux coordonnées de départ, et 3 segments supplémentaires
  * sont ajoutés derrière elle, dans la direction opposée au mouvement initial.
- *
- * @param startX Position X de départ de la tête.
- * @param startY Position Y de départ de la tête.
  */
 Snake::Snake(int startX, int startY) : direction(Direction::RIGHT)
 {
@@ -24,11 +60,6 @@ Snake::Snake(int startX, int startY) : direction(Direction::RIGHT)
 	body.push_back({startX - 2, startY}); 
 	body.push_back({startX - 3, startY});
 }
-
-/**
- * @brief Destructeur par défaut
- */
-Snake::~Snake() {}
 
 /**
  * @brief Déplace le serpent dans la direction actuelle
