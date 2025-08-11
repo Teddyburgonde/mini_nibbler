@@ -117,9 +117,9 @@ bool parseArguments(int argc, char** argv, int &width, int &height, bool &obstac
         printUsage(argv[0]);
         return false;
     }
-    if (w < 10 || h < 10)
+    if (w < 30 || h < 30)
 	{
-        std::cout << "Error: size must be more than 10.\n";
+        std::cout << "Error: size must be more than 30.\n";
         return false;
     }
 
