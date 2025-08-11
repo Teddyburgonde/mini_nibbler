@@ -34,14 +34,14 @@ void GuiSDL::checkTerminalSize(int requiredWidth, int requiredHeight)
 		std::cerr << "❌ Game area too small: minimum is "
 		          << minSize << "x" << minSize << std::endl;
 		SDL_Quit();
-		exit(1);
+		throw std::runtime_error("Game area too small");
 	}
 	if (requiredWidth > maxSize || requiredHeight > maxSize)
 	{
 		std::cerr << "❌ Game area too big: maximum is "
 		          << maxSize << "x" << maxSize << std::endl;
 		SDL_Quit();
-		exit(1);
+		throw std::runtime_error("Game area too big");
 	}
 }
 
@@ -55,7 +55,7 @@ void GuiSDL::checkTerminalSize(int requiredWidth, int requiredHeight)
  * accéléré.
  * 
  * En cas d'échec à l'une des étapes, la fonction affiche un message
- * d'erreur sur la sortie standard et termine le programme avec `exit(1)`.
+ * d'erreur sur la sortie standard et throw une exception
  * 
  * @param width  Largeur du plateau de jeu (en cases).
  * @param height Hauteur du plateau de jeu (en cases).
@@ -67,7 +67,7 @@ void    GuiSDL::init(int width, int height)
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		std::cerr << "❌ SDL_Init failed: " << SDL_GetError() << std::endl;
-		exit(1);
+		throw std::runtime_error("SDL_Init failed");
 	}
     checkTerminalSize(width, height);
 
@@ -79,7 +79,7 @@ void    GuiSDL::init(int width, int height)
 	{
 		std::cerr << "❌ SDL_CreateWindow failed: " << SDL_GetError() << std::endl;
 		SDL_Quit();
-		exit(1);
+		throw std::runtime_error("SDL_CreateWindow failed");
 	}
 
     _renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
@@ -88,7 +88,7 @@ void    GuiSDL::init(int width, int height)
 		std::cerr << "❌ SDL_CreateRenderer failed: " << SDL_GetError() << std::endl;
 		SDL_DestroyWindow(_window);
 		SDL_Quit();
-		exit(1);
+		throw std::runtime_error("SDL_CreateRenderer failed");
 	}
 }
 
@@ -269,7 +269,12 @@ void GuiSDL::cleanup()
  */
 void GuiSDL::showGameOver()
 {
-	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Game Over", "You lost!", _window);
+	if (SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Game Over", "You lost!", _window) != 0)
+	{
+		std::cerr << "❌ SDL_ShowSimpleMessageBox failed: " << SDL_GetError() << std::endl;
+		SDL_Quit();
+		throw std::runtime_error("SDL_ShowSimpleMessageBox failed");
+	}
 }
 
 /**
@@ -279,5 +284,10 @@ void GuiSDL::showGameOver()
  */
 void GuiSDL::showVictory()
 {
-	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Victory!", "You won!", _window);
+	if (SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Victory!", "You won!", _window) != 0)
+	{
+		std::cerr << "❌ SDL_ShowSimpleMessageBox failed: " << SDL_GetError() << std::endl;
+		SDL_Quit();
+		throw std::runtime_error("SDL_ShowSimpleMessageBox failed");
+	}
 }

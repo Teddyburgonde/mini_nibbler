@@ -209,79 +209,83 @@ Input applyChaosMode(Input input)
  * @param argv Tableau des arguments.
  * @return Code de sortie.
  */
-int main(int argc, char **argv)
-{
-	int width = 0;
-	int	height = 0;
-	bool obstaclesEnabled = false;
-	bool chaosEnabled = false;
-	GuiStart guiStart = GuiStart::Ncurses;
+int main(int argc, char **argv) {
+	try {
+		int width = 0;
+		int	height = 0;
+		bool obstaclesEnabled = false;
+		bool chaosEnabled = false;
+		GuiStart guiStart = GuiStart::Ncurses;
 
-	if (!parseArguments(argc, argv, width, height, obstaclesEnabled, chaosEnabled, guiStart))
-        return 1;
+		if (!parseArguments(argc, argv, width, height, obstaclesEnabled, chaosEnabled, guiStart))
+			return 1;
 
-	setlocale(LC_ALL, "");
+		setlocale(LC_ALL, "");
 
-	// Sélection initiale de la lib en fonction de l’option
-	const char* initialLibPath = "./libgui_ncurses.so";
-	switch (guiStart)
-	{
-		case GuiStart::Ncurses: initialLibPath = "./libgui_ncurses.so"; break;
-		case GuiStart::SDL:     initialLibPath = "./libgui_sdl.so";     break;
-		case GuiStart::OpenGL:  initialLibPath = "./libgui_opengl.so";  break;
-	}
-	IGui* gui = loadGui(initialLibPath, width, height);
-
-	GameState game(width, height, obstaclesEnabled);
-	bool quitByPlayer = false;
-
-	while (!game.isFinished())
-	{
-		Input input = gui->getInput();
-
-		switch (input) {
-			case Input::HELP:
-				game.toggleHelpMenu();
-				break;
-			case Input::SWITCH_TO_1:
-				gui->cleanup();
-				delete gui;
-				gui = loadGui("./libgui_sdl.so", width, height);
-				usleep(500000);
-				continue;
-			case Input::SWITCH_TO_2:
-				gui->cleanup();
-				delete gui;
-				SDL_Quit();  // au cas où SDL n'a pas bien quitté
-				system("stty sane");  // restaure le terminal
-				system("clear");
-				gui = loadGui("./libgui_ncurses.so", width, height);
-				continue;
-			case Input::SWITCH_TO_3:
-				gui->cleanup();
-				delete gui;
-				gui = loadGui("./libgui_opengl.so", width, height);
-				usleep(500000);
-				continue;
-			case Input::EXIT:
-				quitByPlayer = true;
-				break;
-			default:
-				if (chaosEnabled)
-					input = applyChaosMode(input);
-				if (!game.isHelpMenuActive()) {
-					game.setDirection(input);
-					game.update();
-				}
+		// Sélection initiale de la lib en fonction de l’option
+		const char* initialLibPath = "./libgui_ncurses.so";
+		switch (guiStart)
+		{
+			case GuiStart::Ncurses: initialLibPath = "./libgui_ncurses.so"; break;
+			case GuiStart::SDL:     initialLibPath = "./libgui_sdl.so";     break;
+			case GuiStart::OpenGL:  initialLibPath = "./libgui_opengl.so";  break;
 		}
-		if (quitByPlayer)
-			break;
+		IGui* gui = loadGui(initialLibPath, width, height);
 
-		gui->render(game);
-		usleep(100000);
+		GameState game(width, height, obstaclesEnabled);
+		bool quitByPlayer = false;
+
+		while (!game.isFinished())
+		{
+			Input input = gui->getInput();
+
+			switch (input) {
+				case Input::HELP:
+					game.toggleHelpMenu();
+					break;
+				case Input::SWITCH_TO_1:
+					gui->cleanup();
+					delete gui;
+					gui = loadGui("./libgui_sdl.so", width, height);
+					usleep(500000);
+					continue;
+				case Input::SWITCH_TO_2:
+					gui->cleanup();
+					delete gui;
+					SDL_Quit();  // au cas où SDL n'a pas bien quitté
+					system("stty sane");  // restaure le terminal
+					system("clear");
+					gui = loadGui("./libgui_ncurses.so", width, height);
+					continue;
+				case Input::SWITCH_TO_3:
+					gui->cleanup();
+					delete gui;
+					gui = loadGui("./libgui_opengl.so", width, height);
+					usleep(500000);
+					continue;
+				case Input::EXIT:
+					quitByPlayer = true;
+					break;
+				default:
+					if (chaosEnabled)
+						input = applyChaosMode(input);
+					if (!game.isHelpMenuActive()) {
+						game.setDirection(input);
+						game.update();
+					}
+			}
+			if (quitByPlayer)
+				break;
+
+			gui->render(game);
+			usleep(100000);
+		}
+		showEndScreen(game, gui, quitByPlayer);
+		gui->cleanup();
+		delete gui;
+		return 0;
+	} catch (const std::exception& e) {
+		std::cerr << "❌ Error: " << e.what() << std::endl;
+		return 1;
 	}
-	showEndScreen(game, gui, quitByPlayer);
-	gui->cleanup();
-	delete gui;
-	return 0;
 }

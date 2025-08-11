@@ -10,16 +10,35 @@
 #include "GuiNcurses.hpp"
 #include <iostream> // pour std::cout utilisé dans checkTerminalSize
 
-// ===== Forme canonique (Coplien) =====
 
+/**
+ * @brief Constructeur par défaut de GuiNcurses.
+ *
+ * Initialise les dimensions de l'écran à 0.
+ */
 GuiNcurses::GuiNcurses()
 	: _screenWidth(0), _screenHeight(0)
 {}
 
+/**
+ * @brief Constructeur de copie pour GuiNcurses.
+ *
+ * Copie les dimensions de l'écran depuis un autre objet GuiNcurses.
+ *
+ * @param other L'objet GuiNcurses à copier.
+ */
 GuiNcurses::GuiNcurses(const GuiNcurses& other)
 	: _screenWidth(other._screenWidth), _screenHeight(other._screenHeight)
 {}
 
+/**
+ * @brief Opérateur d'affectation pour GuiNcurses.
+ *
+ * Permet de copier les dimensions de l'écran depuis un autre objet GuiNcurses.
+ *
+ * @param other L'objet GuiNcurses à copier.
+ * @return Référence à l'objet courant.
+ */
 GuiNcurses& GuiNcurses::operator=(const GuiNcurses& other)
 {
 	if (this != &other)
@@ -49,7 +68,7 @@ void GuiNcurses::checkTerminalSize(int requiredWidth, int requiredHeight)
 		endwin();
 		std::cout << "❌ Terminal too small: resize to at least "
 		          << requiredWidth << "x" << requiredHeight << std::endl;
-		exit(1);
+		throw std::runtime_error("Terminal too small");
 	}
 }
 
@@ -71,10 +90,7 @@ void GuiNcurses::init(int width, int height)
 	//set_escdelay(25);
 	refresh();
 	if (win == nullptr)
-	{
-		std::cout << "initscr() failed!" << std::endl;
-		return;
-	}
+		throw std::runtime_error("Failed to initialize terminal");
 	checkTerminalSize(width, height); 
 	noecho();
 	nodelay(stdscr, TRUE);
@@ -125,7 +141,9 @@ void	GuiNcurses::render(const GameState& state)
 		mvprintw(8, 7, "h    : Afficher / Cacher ce menu");
 		mvprintw(9, 7, "esc / q : Quitter");
 		mvprintw(11, 5, "Appuyez sur 'h' pour reprendre la partie...");
-		refresh();
+		if (refresh() == ERR) {
+			throw std::runtime_error("Failed to refresh ncurses window");
+		}
 		return;
 	}
 	clear();
@@ -134,7 +152,9 @@ void	GuiNcurses::render(const GameState& state)
 	drawSnake(state.getSnake().getBody());
 	drawFood(state.getFood());
 	drawObstacles(state.getObstacles());
-	refresh();
+	if (refresh() == ERR) {
+		throw std::runtime_error("Failed to refresh ncurses window");
+	}
 }
 
 /**
@@ -188,7 +208,11 @@ Input GuiNcurses::getInput()
  */
 void	GuiNcurses::cleanup()
 {
-	endwin();
+	auto ret = endwin();
+	if (ret == ERR) {
+		throw std::runtime_error("Failed to end ncurses mode");
+	}
+
 }
 
 
@@ -216,7 +240,9 @@ void GuiNcurses::showGameOver()
 	int ch;
 	while ((ch = getch()) != 'q') {}
 
-	delwin(popup);
+	if (delwin(popup) == ERR) {
+		throw std::runtime_error("Failed to delete popup window");
+	}
 }
 
 /**
@@ -242,5 +268,7 @@ void GuiNcurses::showVictory()
 	int ch;
 	while ((ch = getch()) != 'q') {}
 
-	delwin(popup);
+	if (delwin(popup) == ERR) {
+		throw std::runtime_error("Failed to delete popup window");
+	}
 }

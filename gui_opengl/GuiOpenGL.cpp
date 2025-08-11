@@ -32,7 +32,7 @@ void GuiOpenGL::init(int width, int height)
 	if (!glfwInit())
 	{
 		std::cerr << "❌ GLFW init failed!" << std::endl;
-		exit(1);
+		throw std::runtime_error("GLFW initialization failed");
 	}
 
 	// Paramètres OpenGL (version 3.3)
@@ -45,7 +45,7 @@ void GuiOpenGL::init(int width, int height)
 	{
 		std::cerr << "❌ Failed to create OpenGL window!" << std::endl;
 		glfwTerminate();
-		exit(1);
+		throw std::runtime_error("Failed to create OpenGL window!");
 	}
 
 	// Rendre le contexte courant
