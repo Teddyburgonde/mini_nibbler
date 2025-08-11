@@ -157,10 +157,14 @@ void	GuiSDL::render(const GameState& state)
 	SDL_RenderClear(_renderer);
 
 	// Dessine le serpent
-	SDL_SetRenderDrawColor(_renderer, 0, 255, 0, 255); // vert
-	for (const Point& p : state.getSnake().getBody())
+	for (size_t i = 0; i < state.getSnake().getBody().size(); ++i)
 	{
-		SDL_Rect rect = { p.x * 20, p.y * 20, 20, 20 };
+		if (i == 0) // tête du serpent
+			SDL_SetRenderDrawColor(_renderer, 0, 0, 200, 255); // bleu foncé
+		else
+			SDL_SetRenderDrawColor(_renderer, 0, 200, 0, 255); // vert foncé
+		SDL_Rect rect = { state.getSnake().getBody()[i].x * 20,
+						  state.getSnake().getBody()[i].y * 20, 20, 20 };
 		SDL_RenderFillRect(_renderer, &rect);
 	}
 

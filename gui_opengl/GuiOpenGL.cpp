@@ -129,8 +129,14 @@ void GuiOpenGL::render(const GameState& state)
 	}
 	// Dessine le serpent (vert)
 	glColor3f(0.0f, 0.8f, 1.0f); // Bleu cyan
-	for (const Point& p : state.getSnake().getBody())
+	for (size_t i = 0; i < state.getSnake().getBody().size(); ++i)
 	{
+		if (i == 0)
+			glColor3f(0.0f, 1.0f, 0.0f); // Vert pour la tête
+		else
+			glColor3f(0.0f, 0.8f, 1.0f); // Bleu cyan pour le corps
+
+		const Point& p = state.getSnake().getBody()[i];
 		float x = p.x * 20.0f;
 		float y = p.y * 20.0f;
 		
