@@ -240,8 +240,6 @@ int main(int argc, char **argv)
 		Input input = gui->getInput();
 
 		switch (input) {
-			case Input::NONE:
-				continue;
 			case Input::HELP:
 				game.toggleHelpMenu();
 				break;
@@ -249,7 +247,7 @@ int main(int argc, char **argv)
 				gui->cleanup();
 				delete gui;
 				gui = loadGui("./libgui_sdl.so", width, height);
-				usleep(100000);
+				usleep(500000);
 				continue;
 			case Input::SWITCH_TO_2:
 				gui->cleanup();
@@ -262,9 +260,8 @@ int main(int argc, char **argv)
 			case Input::SWITCH_TO_3:
 				gui->cleanup();
 				delete gui;
-				SDL_Quit();
 				gui = loadGui("./libgui_opengl.so", width, height);
-				usleep(100000);
+				usleep(500000);
 				continue;
 			case Input::EXIT:
 				quitByPlayer = true;
