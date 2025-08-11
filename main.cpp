@@ -76,7 +76,6 @@ void	showEndScreen(GameState &game, IGui* &gui, bool quitByPlayer)
  *
  * @param prog Nom du programme (argv[0]).
  */
-
 static void	printUsage(const char* prog) 
 {
     std::cout << "Usage: " << prog << " <width> <height> [options]\n"
@@ -90,9 +89,9 @@ static void	printUsage(const char* prog)
 }
 
 enum class GuiStart {
-	Ncurses, 
-	SDL, 
-	OpenGL 
+	Ncurses,
+	SDL,
+	OpenGL
 };
 
 
@@ -117,9 +116,9 @@ bool parseArguments(int argc, char** argv,
                     bool &obstaclesEnabled, bool &chaosEnabled,
                     GuiStart &guiStart)
 {
-    if (argc < 3) 
+    if (argc < 3)
     {
-        printUsage(argv[0]); 
+        printUsage(argv[0]);
         return false;
     }
 
@@ -169,13 +168,12 @@ bool parseArguments(int argc, char** argv,
     }
 
     width = w; 
-    height = h;
+	height = h;
     obstaclesEnabled = obstacles;
     chaosEnabled = chaos;
     guiStart = chosenGui;
     return true;
 }
-
 
 /**
  * @brief Applique la transformation du mode chaos sur la direction du joueur.
@@ -241,56 +239,52 @@ int main(int argc, char **argv)
 	{
 		Input input = gui->getInput();
 
-		if (input == Input::HELP)
-			game.toggleHelpMenu();
-
-		if (chaosEnabled)
-    		input = applyChaosMode(input);
-
-		// GUI switching
-		if (input == Input::SWITCH_TO_1)
-		{
-			gui->cleanup(); delete gui;
-			gui = loadGui("./libgui_sdl.so", width, height);
-			usleep(500000); 
-			continue;
+		switch (input) {
+			case Input::NONE:
+				continue;
+			case Input::HELP:
+				game.toggleHelpMenu();
+				break;
+			case Input::SWITCH_TO_1:
+				gui->cleanup();
+				delete gui;
+				gui = loadGui("./libgui_sdl.so", width, height);
+				usleep(100000);
+				continue;
+			case Input::SWITCH_TO_2:
+				gui->cleanup();
+				delete gui;
+				SDL_Quit();  // au cas où SDL n'a pas bien quitté
+				system("stty sane");  // restaure le terminal
+				system("clear");
+				gui = loadGui("./libgui_ncurses.so", width, height);
+				continue;
+			case Input::SWITCH_TO_3:
+				gui->cleanup();
+				delete gui;
+				SDL_Quit();
+				gui = loadGui("./libgui_opengl.so", width, height);
+				usleep(100000);
+				continue;
+			case Input::EXIT:
+				quitByPlayer = true;
+				break;
+			default:
+				if (chaosEnabled)
+					input = applyChaosMode(input);
+				if (!game.isHelpMenuActive()) {
+					game.setDirection(input);
+					game.update();
+				}
 		}
-		else if (input == Input::SWITCH_TO_2)
-		{
-			gui->cleanup(); delete gui;
-			SDL_Quit();              // au cas où SDL n'a pas bien quitté
-			system("stty sane");     // restaure le terminal
-			system("clear");
-			gui = loadGui("./libgui_ncurses.so", width, height);
-			continue;
-		}
-		else if (input == Input::SWITCH_TO_3)
-		{
-			gui->cleanup(); delete gui;
-			gui = loadGui("./libgui_opengl.so", width, height);
-			usleep(500000);
-			continue;
-		}
-
-		if (input == Input::EXIT)
-		{
-			quitByPlayer = true;
+		if (quitByPlayer)
 			break;
-		}
-
-		if (!game.isHelpMenuActive())
-		{
-			game.setDirection(input);
-			game.update();
-		}
 
 		gui->render(game);
 		usleep(100000);
 	}
-
 	showEndScreen(game, gui, quitByPlayer);
 	gui->cleanup();
 	delete gui;
 	return 0;
 }
-
