@@ -10,8 +10,6 @@
 #include "GuiOpenGL.hpp"
 
 
-// ===== Forme canonique =====
-
 GuiOpenGL::GuiOpenGL()
 	: _window(nullptr), _screenWidth(0), _screenHeight(0)
 {}
