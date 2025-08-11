@@ -69,8 +69,7 @@ void GuiNcurses::init(int width, int height)
  *
  * Cette fonction dessine les obstacles en utilisant des caractères spéciaux.
  *
- * @param width Largeur du terrain de jeu.
- * @param height Hauteur du terrain de jeu.
+ * @param obstacles Vecteur de points représentant les positions des obstacles.
  */
 void GuiNcurses::drawObstacles(const std::vector<Point>& obstacles)
 {
