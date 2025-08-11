@@ -6,7 +6,7 @@ GENERATE_LATEX         = NO
 GENERATE_XML           = YES
 RECURSIVE              = YES
 
-INPUT                  = ../include ../src
+INPUT                  = ../includes ../core ../gui_ncurses ../gui_opengl ../gui_sdl
 FILE_PATTERNS          = *.hpp *.h *.cpp
 
 EXTRACT_ALL            = YES      # pick up items without doc-blocks too
