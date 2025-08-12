@@ -25,7 +25,6 @@
 class GuiSDL : public IGui
 {
 	public:
-		// ===== Forme canonique (Coplien) =====
 		GuiSDL();                          // Constructeur par défaut
 		GuiSDL(const GuiSDL&) = delete;    // Interdit la copie
 		GuiSDL& operator=(const GuiSDL&) = delete; // Interdit la copie

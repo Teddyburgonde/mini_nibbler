@@ -87,7 +87,6 @@ void GuiNcurses::init(int width, int height)
 	_screenWidth = width;
 	_screenHeight = height;
 	WINDOW* win = initscr();
-	//set_escdelay(25);
 	refresh();
 	if (win == nullptr)
 		throw std::runtime_error("Failed to initialize terminal");

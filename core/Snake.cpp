@@ -8,8 +8,6 @@
 
 #include "Snake.hpp"
 
-// ===== Forme canonique =====
-
 /**
  * @brief Constructeur par défaut : serpent de 4 segments à l'origine, vers la droite.
  */
